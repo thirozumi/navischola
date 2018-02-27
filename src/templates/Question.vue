@@ -1,6 +1,9 @@
 <template lang="pug">
   div
     Header
+    h1
+      | {{ title_primary }}
+      small {{ title_secondary }}
     div(v-show="count < 20")
       strong QUESTION {{ count }}
       h1(v-for="(question, index) in questions", v-if="current == question.id") {{ question.id }} {{ question.summary }}
@@ -33,6 +36,8 @@ export default {
   },
   data() {
     return {
+      title_primary: 'Achademic Diagnosis',
+      title_secondary: '学問分野診断',
       rest: 20,
       count: 1,
       current: 1,
@@ -645,6 +650,9 @@ export default {
 </script>
 
 <style lang="scss">
+  h1 > small {
+    display: block;
+  }
   li {
     cursor: pointer;
   }

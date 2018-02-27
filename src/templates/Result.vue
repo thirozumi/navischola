@@ -3,7 +3,7 @@
     Header
     h1 {{ title }}
     h2 {{ heading }}
-    p
+    p(v-if="map !== null")
       img(v-bind:src="map")
     Footer
 </template>
@@ -43,8 +43,6 @@ export default {
         return 'https://source.unsplash.com/1024x768/?child'
       } else if (q === 'baz') {
         return 'https://source.unsplash.com/1024x768/?food'
-      } else {
-        return 'Error!'
       }
     }
   }
