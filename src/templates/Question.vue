@@ -4,18 +4,23 @@
     h1
       | {{ title_primary }}
       small {{ title_secondary }}
-    div(v-show="count < 20")
-      strong QUESTION {{ count }}
-      h1(v-for="(question, index) in questions", v-if="current == question.id") {{ question.id }} {{ question.summary }}
-      ul(v-for="(question, index) in questions", v-if="current == question.id")
-        li(v-on:click="getNextQuestion(question.yes)") Yes &gt; {{ question.yes }}
-        li(v-on:click="getNextQuestion(question.no)") No &gt; {{ question.no }}
-        li(v-on:click="count = 1") 最初からやり直す
-      p [残り{{ rest - count }}問]
-    div(v-show="count >= 20")
-      ul(v-for="(question, index) in questions", v-if="current == question.id")
+    div(v-show="count < count_max")
+      strong QUESTION {{ current }}
+      h1(v-for="question in questions", v-if="count == question.id") {{ current }} {{ question.summary }}
+      ul(v-for="question in questions", v-if="count == question.id")
         li
-          router-link(v-bind:to="{ path: '/result', query: { q: question.query}}") 結果をみる
+          button(v-on:click="getNext(0)") Yes
+        li
+          button(v-on:click="getNext(1)") No
+    div(v-show="count > 0 && count < count_max")
+      p
+        button(v-on:click="getPrevious()") 前の質問にもどる
+      p
+        button(v-on:click="init()") 最初からやり直す
+    p(v-show="count !== count_max") {{ current }} / {{ count_max }}
+    div(v-show="count == count_max")
+      p
+        router-link(v-bind:to="{ path: '/result', query: { id: getId()}}") 結果をみる
     Footer
 </template>
 
@@ -28,622 +33,192 @@ export default {
   components: {
     Header, Footer
   },
+  computed: {
+    current: function() {
+      return this.count + 1;
+    }
+  },
   methods: {
-    getNextQuestion: function(val) {
-      this.current = val;
+    init: function() {
+      this.count = 0;
+    },
+    getNext: function(val) {
       this.count++;
+      this.d.push(val);
+      console.log('push, ', this.d);
+    },
+    getPrevious: function() {
+      this.count--;
+      this.d.pop();
+      console.log('pop, ', this.d);
+    },
+    getId: function() {
+      if(this.d[0] <= 0.5)
+        if(this.d[4] <= 0.5)
+          if(this.d[6] <= 0.5)
+            if(this.d[10] <= 0.5)
+              if(this.d[12] <= 0.5)
+                return "11" // 医歯薬学
+              else // if d[12] > 0.5
+                return "11" // 医歯薬学
+            else // if d[10] > 0.5
+              return "2" // 複合領域
+          else // if d[6] > 0.5
+            if(this.d[14] <= 0.5)
+              if(this.d[10] <= 0.5)
+                if(this.d[12] <= 0.5)
+                  return "4" // 社会科学
+                else // if d[12] > 0.5
+                  return "3" // 人文学
+              else // if d[10] > 0.5
+                return "4" // 社会科学
+            else // if d[14] > 0.5
+              if(this.d[8] <= 0.5)
+                if(this.d[13] <= 0.5)
+                  if(this.d[11] <= 0.5)
+                    return "7" // 化学
+                  else // if d[11] > 0.5
+                    return "3" // 人文学
+                else // if d[13] > 0.5
+                  return "0"  // 情報学
+              else // if d[8] > 0.5
+                return "4" // 社会科学
+        else // if d[4] > 0.5
+          if(this.d[2] <= 0.5)
+            if(this.d[11] <= 0.5)
+              if(this.d[13] <= 0.5)
+                if(this.d[5] <= 0.5)
+                  if(this.d[6] <= 0.5)
+                    return "11" // 医歯薬学
+                  else // if d[6] > 0.5
+                    if(this.d[9] <= 0.5)
+                      return "9" // 生物学
+                    else // if d[9] > 0.5
+                      return "7" // 化学
+                else // if d[5] > 0.5
+                  return "8" // 工学
+              else // if d[13] > 0.5
+                return "4" // 社会科学
+            else // if d[11] > 0.5
+              if(this.d[12] <= 0.5)
+                return "10" // 農学
+              else // if d[12] > 0.5
+                if(this.d[5] <= 0.5)
+                  return "8" // 工学
+                else // if d[5] > 0.5
+                  return "5" // 総合理工
+          else // if d[2] > 0.5
+            if(this.d[3] <= 0.5)
+              if(this.d[1] <= 0.5)
+                return "10" // 農学
+              else // if d[1] > 0.5
+                return "6" // 数物系科学
+            else // if d[3] > 0.5
+              return "1" // 環境学
+      else // if d[0] > 0.5
+        if(this.d[4] <= 0.5)
+          if(this.d[1] <= 0.5)
+            if(this.d[6] <= 0.5)
+              if(this.d[12] <= 0.5)
+                return "7" // 化学
+              else // if d[12] > 0.5
+                return "8" // 工学
+            else // if d[6] > 0.5
+              return "9" // 生物学
+          else // if d[1] > 0.5
+            if(this.d[6] <= 0.5)
+              return "6" // 数物系科学
+            else // if d[6] > 0.5
+              if(this.d[10] <= 0.5)
+                return "9" // 生物学
+              else // if d[10] > 0.5
+                return "3" // 人文学
+        else // if d[4] > 0.5
+          if(this.d[5] <= 0.5)
+            return "9" // 生物学
+          else // if d[5] > 0.5
+            if(this.d[10] <= 0.5)
+              return "9" // 生物学
+            else // if d[10] > 0.5
+              if(this.d[6] <= 0.5)
+                if(this.d[2] <= 0.5)
+                  return "6" // 数物系科学
+                else // if d[2] > 0.5
+                  return "6" // 数物系科学
+              else // if d[6] > 0.5
+                return "6" // 数物系科学
     }
   },
   data() {
     return {
       title_primary: 'Achademic Diagnosis',
       title_secondary: '学問分野診断',
-      rest: 20,
-      count: 1,
-      current: 1,
+      count: 0,
+      count_max: 20,
+      d: [],
       questions: [
         {
-          "id": 1,
-          "summary": "自分がやっていることが、社会の役にたっていると思うと気分がいい。",
-          "yes": 2,
-          "no": 100,
-          "query": "foo"
+          "id": "0",
+          "summary": "自分がやっていることが、社会の役にたっていると思うと気分がいい。"
         }, {
-          "id": 2,
-          "summary": "理不尽なことが起きたとき、そこには何か理由があると思う。",
-          "yes": 3,
-          "no": 99,
-          "query": "bar"
+          "id": "1",
+          "summary": "どんな状況でも、ひいきはよくないと思う。"
         }, {
-          "id": 3,
-          "summary": "どんな状況でも、ひいきはよくないと思う。",
-          "yes": 4,
-          "no": 98,
-          "query": "baz"
+          "id": "2",
+          "summary": "誰かと取り組んだほうが、一人でやるよりも上手くいくと思う。"
         }, {
-          "id": 4,
-          "summary": "「風が吹けば桶屋が儲かる」ということわざを、その通りだと思う。",
-          "yes": 5,
-          "no": 97,
-          "query": "foo"
+          "id": "3",
+          "summary": "成果をあげるためには、その他のことを犠牲にしても構わないと思う。"
         }, {
-          "id": 5,
-          "summary": "人生で好きなことをやっていられるなら、生活レヴェルを下げることは厭わない。",
-          "yes": 6,
-          "no": 96,
-          "query": "bar"
+          "id": "4",
+          "summary": "何かに熱中していると、我を失うことがあるが、それが悪いとは思わない。"
         }, {
-          "id": 6,
-          "summary": "自分が明日死んだとしても、世界はそのまま回り続けると思う。",
-          "yes": 7,
-          "no": 95,
-          "query": "baz"
+          "id": "5",
+          "summary": "お金のことにキチンとしていない人を見ると、イラッとする。"
         }, {
-          "id": 7,
-          "summary": "自分が達成したことを、世の中に知らしめたいと思うことがある。",
-          "yes": 8,
-          "no": 94,
-          "query": "foo"
+          "id": "6",
+          "summary": "理不尽なことが起きたとき、そこには何か理由があると思う。"
         }, {
-          "id": 8,
-          "summary": "自堕落な生活をしている人を見ると、人間失格だと思ってしまう。",
-          "yes": 9,
-          "no": 93,
-          "query": "bar"
+          "id": "7",
+          "summary": "「風が吹けば桶屋が儲かる」ということわざを、その通りだと思う。"
         }, {
-          "id": 9,
-          "summary": "誰かと取り組んだほうが、一人でやるより上手くいくと思う。",
-          "yes": 10,
-          "no": 92,
-          "query": "baz"
+          "id": "8",
+          "summary": "自分が明日死んだとしても、世界はそのまま回り続けると思う。"
         }, {
-          "id": 10,
-          "summary": "身の回りでお金持ちの人になった人には、それなりの理由があると思う。",
-          "yes": 11,
-          "no": 91,
-          "query": "foo"
+          "id": "9",
+          "summary": "自堕落な生活をしている人を見ると、人間失格だと思ってしまう。"
         }, {
-          "id": 11,
-          "summary": "自分がやっていることが、社会の役にたっていると思うと気分がいい。",
-          "yes": 12,
-          "no": 90,
-          "query": "bar"
+          "id": "10",
+          "summary": "効率が悪い作業をしている人をみると、助けてあげたいと思う。"
         }, {
-          "id": 12,
-          "summary": "理不尽なことが起きたとき、そこには何か理由があると思う。",
-          "yes": 13,
-          "no": 89,
-          "query": "baz"
+          "id": "11",
+          "summary": "自分ができない冒険をする上司（先輩）に憧れる。"
         }, {
-          "id": 13,
-          "summary": "どんな状況でも、ひいきはよくないと思う。",
-          "yes": 14,
-          "no": 88,
-          "query": "foo"
+          "id": "12",
+          "summary": "誰かと一緒に何かをやるなら、仲良くなったほうがトクだと思う。"
         }, {
-          "id": 14,
-          "summary": "「風が吹けば桶屋が儲かる」ということわざを、その通りだと思う。",
-          "yes": 15,
-          "no": 87,
-          "query": "bar"
+          "id": "13",
+          "summary": "自分が信じることを、曲げるのはイヤだ。"
         }, {
-          "id": 15,
-          "summary": "人生で好きなことをやっていられるなら、生活レヴェルを下げることは厭わない。",
-          "yes": 16,
-          "no": 86,
-          "query": "baz"
+          "id": "14",
+          "summary": "人付き合いは得意なほうだと思う。"
         }, {
-          "id": 16,
-          "summary": "自分が明日死んだとしても、世界はそのまま回り続けると思う。",
-          "yes": 17,
-          "no": 85,
-          "query": "foo"
+          "id": "15",
+          "summary": "人生で好きなことをやっていられるなら、生活レヴェルを下げることは厭わない。"
         }, {
-          "id": 17,
-          "summary": "自分が達成したことを、世の中に知らしめたいと思うことがある。",
-          "yes": 18,
-          "no": 84,
-          "query": "bar"
+          "id": "16",
+          "summary": "自分が達成したことを、世の中に知らしめたいと思うことがある。"
         }, {
-          "id": 18,
-          "summary": "自堕落な生活をしている人を見ると、人間失格だと思ってしまう。",
-          "yes": 19,
-          "no": 83,
-          "query": "baz"
+          "id": "17",
+          "summary": "知らない人としゃべることは、自分のためになると思う。"
         }, {
-          "id": 19,
-          "summary": "誰かと取り組んだほうが、一人でやるより上手くいくと思う。",
-          "yes": 20,
-          "no": 82,
-          "query": "foo"
+          "id": "18",
+          "summary": "見たことも聞いたこともない場所に行ってみたいと思うことがある。"
         }, {
-          "id": 20,
-          "summary": "身の回りでお金持ちの人になった人には、それなりの理由があると思う。",
-          "yes": 21,
-          "no": 81,
-          "query": "bar"
-        }, {
-          "id": 21,
-          "summary": "自分がやっていることが、社会の役にたっていると思うと気分がいい。",
-          "yes": 22,
-          "no": 80,
-          "query": "baz"
-        }, {
-          "id": 22,
-          "summary": "理不尽なことが起きたとき、そこには何か理由があると思う。",
-          "yes": 23,
-          "no": 79,
-          "query": "foo"
-        }, {
-          "id": 23,
-          "summary": "どんな状況でも、ひいきはよくないと思う。",
-          "yes": 24,
-          "no": 78,
-          "query": "bar"
-        }, {
-          "id": 24,
-          "summary": "「風が吹けば桶屋が儲かる」ということわざを、その通りだと思う。",
-          "yes": 25,
-          "no": 77,
-          "query": "baz"
-        }, {
-          "id": 25,
-          "summary": "人生で好きなことをやっていられるなら、生活レヴェルを下げることは厭わない。",
-          "yes": 26,
-          "no": 76,
-          "query": "foo"
-        }, {
-          "id": 26,
-          "summary": "自分が明日死んだとしても、世界はそのまま回り続けると思う。",
-          "yes": 27,
-          "no": 75,
-          "query": "bar"
-        }, {
-          "id": 27,
-          "summary": "自分が達成したことを、世の中に知らしめたいと思うことがある。",
-          "yes": 28,
-          "no": 74,
-          "query": "baz"
-        }, {
-          "id": 28,
-          "summary": "自堕落な生活をしている人を見ると、人間失格だと思ってしまう。",
-          "yes": 29,
-          "no": 73,
-          "query": "foo"
-        }, {
-          "id": 29,
-          "summary": "誰かと取り組んだほうが、一人でやるより上手くいくと思う。",
-          "yes": 30,
-          "no": 72,
-          "query": "bar"
-        }, {
-          "id": 30,
-          "summary": "身の回りでお金持ちの人になった人には、それなりの理由があると思う。",
-          "yes": 31,
-          "no": 71,
-          "query": "baz"
-        }, {
-          "id": 31,
-          "summary": "自分がやっていることが、社会の役にたっていると思うと気分がいい。",
-          "yes": 32,
-          "no": 70,
-          "query": "foo"
-        }, {
-          "id": 32,
-          "summary": "理不尽なことが起きたとき、そこには何か理由があると思う。",
-          "yes": 33,
-          "no": 69,
-          "query": "bar"
-        }, {
-          "id": 33,
-          "summary": "どんな状況でも、ひいきはよくないと思う。",
-          "yes": 34,
-          "no": 68,
-          "query": "baz"
-        }, {
-          "id": 34,
-          "summary": "「風が吹けば桶屋が儲かる」ということわざを、その通りだと思う。",
-          "yes": 35,
-          "no": 67,
-          "query": "foo"
-        }, {
-          "id": 35,
-          "summary": "人生で好きなことをやっていられるなら、生活レヴェルを下げることは厭わない。",
-          "yes": 36,
-          "no": 66,
-          "query": "bar"
-        }, {
-          "id": 36,
-          "summary": "自分が明日死んだとしても、世界はそのまま回り続けると思う。",
-          "yes": 37,
-          "no": 65,
-          "query": "baz"
-        }, {
-          "id": 37,
-          "summary": "自分が達成したことを、世の中に知らしめたいと思うことがある。",
-          "yes": 38,
-          "no": 64,
-          "query": "foo"
-        }, {
-          "id": 38,
-          "summary": "自堕落な生活をしている人を見ると、人間失格だと思ってしまう。",
-          "yes": 39,
-          "no": 63,
-          "query": "bar"
-        }, {
-          "id": 39,
-          "summary": "誰かと取り組んだほうが、一人でやるより上手くいくと思う。",
-          "yes": 40,
-          "no": 62,
-          "query": "baz"
-        }, {
-          "id": 40,
-          "summary": "身の回りでお金持ちの人になった人には、それなりの理由があると思う。",
-          "yes": 41,
-          "no": 61,
-          "query": "foo"
-        }, {
-          "id": 41,
-          "summary": "自分がやっていることが、社会の役にたっていると思うと気分がいい。",
-          "yes": 42,
-          "no": 60,
-          "query": "bar"
-        }, {
-          "id": 42,
-          "summary": "理不尽なことが起きたとき、そこには何か理由があると思う。",
-          "yes": 43,
-          "no": 59,
-          "query": "baz"
-        }, {
-          "id": 43,
-          "summary": "どんな状況でも、ひいきはよくないと思う。",
-          "yes": 44,
-          "no": 58,
-          "query": "foo"
-        }, {
-          "id": 44,
-          "summary": "「風が吹けば桶屋が儲かる」ということわざを、その通りだと思う。",
-          "yes": 45,
-          "no": 57,
-          "query": "bar"
-        }, {
-          "id": 45,
-          "summary": "人生で好きなことをやっていられるなら、生活レヴェルを下げることは厭わない。",
-          "yes": 46,
-          "no": 56,
-          "query": "baz"
-        }, {
-          "id": 46,
-          "summary": "自分が明日死んだとしても、世界はそのまま回り続けると思う。",
-          "yes": 47,
-          "no": 55,
-          "query": "foo"
-        }, {
-          "id": 47,
-          "summary": "自分が達成したことを、世の中に知らしめたいと思うことがある。",
-          "yes": 48,
-          "no": 54,
-          "query": "bar"
-        }, {
-          "id": 48,
-          "summary": "自堕落な生活をしている人を見ると、人間失格だと思ってしまう。",
-          "yes": 49,
-          "no": 53,
-          "query": "baz"
-        }, {
-          "id": 49,
-          "summary": "誰かと取り組んだほうが、一人でやるより上手くいくと思う。",
-          "yes": 50,
-          "no": 52,
-          "query": "foo"
-        }, {
-          "id": 50,
-          "summary": "身の回りでお金持ちの人になった人には、それなりの理由があると思う。",
-          "yes": 51,
-          "no": 51,
-          "query": "bar"
-        }, {
-          "id": 51,
-          "summary": "自分がやっていることが、社会の役にたっていると思うと気分がいい。",
-          "yes": 52,
-          "no": 50,
-          "query": "baz"
-        }, {
-          "id": 52,
-          "summary": "理不尽なことが起きたとき、そこには何か理由があると思う。",
-          "yes": 53,
-          "no": 49,
-          "query": "foo"
-        }, {
-          "id": 53,
-          "summary": "どんな状況でも、ひいきはよくないと思う。",
-          "yes": 54,
-          "no": 48,
-          "query": "bar"
-        }, {
-          "id": 54,
-          "summary": "「風が吹けば桶屋が儲かる」ということわざを、その通りだと思う。",
-          "yes": 55,
-          "no": 47,
-          "query": "baz"
-        }, {
-          "id": 55,
-          "summary": "人生で好きなことをやっていられるなら、生活レヴェルを下げることは厭わない。",
-          "yes": 56,
-          "no": 46,
-          "query": "foo"
-        }, {
-          "id": 56,
-          "summary": "自分が明日死んだとしても、世界はそのまま回り続けると思う。",
-          "yes": 57,
-          "no": 45,
-          "query": "bar"
-        }, {
-          "id": 57,
-          "summary": "自分が達成したことを、世の中に知らしめたいと思うことがある。",
-          "yes": 58,
-          "no": 44,
-          "query": "baz"
-        }, {
-          "id": 58,
-          "summary": "自堕落な生活をしている人を見ると、人間失格だと思ってしまう。",
-          "yes": 59,
-          "no": 43,
-          "query": "foo"
-        }, {
-          "id": 59,
-          "summary": "誰かと取り組んだほうが、一人でやるより上手くいくと思う。",
-          "yes": 60,
-          "no": 42,
-          "query": "bar"
-        }, {
-          "id": 60,
-          "summary": "身の回りでお金持ちの人になった人には、それなりの理由があると思う。",
-          "yes": 61,
-          "no": 41,
-          "query": "baz"
-        }, {
-          "id": 61,
-          "summary": "自分がやっていることが、社会の役にたっていると思うと気分がいい。",
-          "yes": 62,
-          "no": 40,
-          "query": "foo"
-        }, {
-          "id": 62,
-          "summary": "理不尽なことが起きたとき、そこには何か理由があると思う。",
-          "yes": 63,
-          "no": 39,
-          "query": "bar"
-        }, {
-          "id": 63,
-          "summary": "どんな状況でも、ひいきはよくないと思う。",
-          "yes": 64,
-          "no": 38,
-          "query": "baz"
-        }, {
-          "id": 64,
-          "summary": "「風が吹けば桶屋が儲かる」ということわざを、その通りだと思う。",
-          "yes": 65,
-          "no": 37,
-          "query": "foo"
-        }, {
-          "id": 65,
-          "summary": "人生で好きなことをやっていられるなら、生活レヴェルを下げることは厭わない。",
-          "yes": 66,
-          "no": 36,
-          "query": "bar"
-        }, {
-          "id": 66,
-          "summary": "自分が明日死んだとしても、世界はそのまま回り続けると思う。",
-          "yes": 67,
-          "no": 35,
-          "query": "baz"
-        }, {
-          "id": 67,
-          "summary": "自分が達成したことを、世の中に知らしめたいと思うことがある。",
-          "yes": 68,
-          "no": 34,
-          "query": "foo"
-        }, {
-          "id": 68,
-          "summary": "自堕落な生活をしている人を見ると、人間失格だと思ってしまう。",
-          "yes": 69,
-          "no": 33,
-          "query": "bar"
-        }, {
-          "id": 69,
-          "summary": "誰かと取り組んだほうが、一人でやるより上手くいくと思う。",
-          "yes": 70,
-          "no": 32,
-          "query": "baz"
-        }, {
-          "id": 70,
-          "summary": "身の回りでお金持ちの人になった人には、それなりの理由があると思う。",
-          "yes": 71,
-          "no": 31,
-          "query": "foo"
-        }, {
-          "id": 71,
-          "summary": "自分がやっていることが、社会の役にたっていると思うと気分がいい。",
-          "yes": 72,
-          "no": 30,
-          "query": "bar"
-        }, {
-          "id": 72,
-          "summary": "理不尽なことが起きたとき、そこには何か理由があると思う。",
-          "yes": 73,
-          "no": 29,
-          "query": "baz"
-        }, {
-          "id": 73,
-          "summary": "どんな状況でも、ひいきはよくないと思う。",
-          "yes": 74,
-          "no": 28,
-          "query": "foo"
-        }, {
-          "id": 74,
-          "summary": "「風が吹けば桶屋が儲かる」ということわざを、その通りだと思う。",
-          "yes": 75,
-          "no": 27,
-          "query": "bar"
-        }, {
-          "id": 75,
-          "summary": "人生で好きなことをやっていられるなら、生活レヴェルを下げることは厭わない。",
-          "yes": 76,
-          "no": 26,
-          "query": "baz"
-        }, {
-          "id": 76,
-          "summary": "自分が明日死んだとしても、世界はそのまま回り続けると思う。",
-          "yes": 77,
-          "no": 25,
-          "query": "foo"
-        }, {
-          "id": 77,
-          "summary": "自分が達成したことを、世の中に知らしめたいと思うことがある。",
-          "yes": 78,
-          "no": 24,
-          "query": "bar"
-        }, {
-          "id": 78,
-          "summary": "自堕落な生活をしている人を見ると、人間失格だと思ってしまう。",
-          "yes": 79,
-          "no": 23,
-          "query": "baz"
-        }, {
-          "id": 79,
-          "summary": "誰かと取り組んだほうが、一人でやるより上手くいくと思う。",
-          "yes": 80,
-          "no": 22,
-          "query": "foo"
-        }, {
-          "id": 80,
-          "summary": "身の回りでお金持ちの人になった人には、それなりの理由があると思う。",
-          "yes": 81,
-          "no": 21,
-          "query": "bar"
-        }, {
-          "id": 81,
-          "summary": "自分がやっていることが、社会の役にたっていると思うと気分がいい。",
-          "yes": 82,
-          "no": 20,
-          "query": "baz"
-        }, {
-          "id": 82,
-          "summary": "理不尽なことが起きたとき、そこには何か理由があると思う。",
-          "yes": 83,
-          "no": 19,
-          "query": "foo"
-        }, {
-          "id": 83,
-          "summary": "どんな状況でも、ひいきはよくないと思う。",
-          "yes": 84,
-          "no": 18,
-          "query": "bar"
-        }, {
-          "id": 84,
-          "summary": "「風が吹けば桶屋が儲かる」ということわざを、その通りだと思う。",
-          "yes": 85,
-          "no": 17,
-          "query": "baz"
-        }, {
-          "id": 85,
-          "summary": "人生で好きなことをやっていられるなら、生活レヴェルを下げることは厭わない。",
-          "yes": 86,
-          "no": 16,
-          "query": "foo"
-        }, {
-          "id": 86,
-          "summary": "自分が明日死んだとしても、世界はそのまま回り続けると思う。",
-          "yes": 87,
-          "no": 15,
-          "query": "bar"
-        }, {
-          "id": 87,
-          "summary": "自分が達成したことを、世の中に知らしめたいと思うことがある。",
-          "yes": 88,
-          "no": 14,
-          "query": "baz"
-        }, {
-          "id": 88,
-          "summary": "自堕落な生活をしている人を見ると、人間失格だと思ってしまう。",
-          "yes": 89,
-          "no": 13,
-          "query": "foo"
-        }, {
-          "id": 89,
-          "summary": "誰かと取り組んだほうが、一人でやるより上手くいくと思う。",
-          "yes": 90,
-          "no": 12,
-          "query": "bar"
-        }, {
-          "id": 90,
-          "summary": "身の回りでお金持ちの人になった人には、それなりの理由があると思う。",
-          "yes": 91,
-          "no": 11,
-          "query": "baz"
-        }, {
-          "id": 91,
-          "summary": "自分がやっていることが、社会の役にたっていると思うと気分がいい。",
-          "yes": 92,
-          "no": 10,
-          "query": "foo"
-        }, {
-          "id": 92,
-          "summary": "理不尽なことが起きたとき、そこには何か理由があると思う。",
-          "yes": 93,
-          "no": 9,
-          "query": "bar"
-        }, {
-          "id": 93,
-          "summary": "どんな状況でも、ひいきはよくないと思う。",
-          "yes": 94,
-          "no": 8,
-          "query": "baz"
-        }, {
-          "id": 94,
-          "summary": "「風が吹けば桶屋が儲かる」ということわざを、その通りだと思う。",
-          "yes": 95,
-          "no": 7,
-          "query": "foo"
-        }, {
-          "id": 95,
-          "summary": "人生で好きなことをやっていられるなら、生活レヴェルを下げることは厭わない。",
-          "yes": 96,
-          "no": 6,
-          "query": "bar"
-        }, {
-          "id": 96,
-          "summary": "自分が明日死んだとしても、世界はそのまま回り続けると思う。",
-          "yes": 97,
-          "no": 5,
-          "query": "baz"
-        }, {
-          "id": 97,
-          "summary": "自分が達成したことを、世の中に知らしめたいと思うことがある。",
-          "yes": 98,
-          "no": 4,
-          "query": "foo"
-        }, {
-          "id": 98,
-          "summary": "自堕落な生活をしている人を見ると、人間失格だと思ってしまう。",
-          "yes": 99,
-          "no": 3,
-          "query": "bar"
-        }, {
-          "id": 99,
-          "summary": "誰かと取り組んだほうが、一人でやるより上手くいくと思う。",
-          "yes": 100,
-          "no": 2,
-          "query": "baz"
-        }, {
-          "id": 100,
-          "summary": "身の回りでお金持ちの人になった人には、それなりの理由があると思う。",
-          "yes": 11,
-          "no": 1,
-          "query": "foo"
+          "id": "19",
+          "summary": "海外で暮らしたことがある人とない人の間には、大きな違いがあると思う。"
         }
-      ]
+      ],
     }
   }
 }
@@ -652,8 +227,5 @@ export default {
 <style lang="scss">
   h1 > small {
     display: block;
-  }
-  li {
-    cursor: pointer;
   }
 </style>
