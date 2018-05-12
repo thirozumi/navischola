@@ -1,7 +1,8 @@
 <template lang="pug">
   header
     h2
-      router-link(to="/") ナビスコラ
+      router-link(to="/")
+        img(src='/assets/images/logo-navischola.svg')
 </template>
 
 <script>

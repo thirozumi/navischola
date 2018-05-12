@@ -1,3 +1,5 @@
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+
 var path = require('path')
 var webpack = require('webpack')
 
@@ -5,7 +7,7 @@ module.exports = {
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, './assets'),
-    publicPath: '/assets/',
+    publicPath: '/assets',
     filename: 'build.js'
   },
   module: {
@@ -83,7 +85,13 @@ module.exports = {
   performance: {
     hints: false
   },
-  devtool: '#eval-source-map'
+  devtool: '#eval-source-map',
+  plugins: [
+    new CopyWebpackPlugin([
+      { from:'./src/assets/data', to:'data' },
+      { from:'./src/assets/images', to:'images' }
+    ])
+  ]
 }
 
 if (process.env.NODE_ENV === 'production') {

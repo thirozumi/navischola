@@ -6,21 +6,15 @@
       small {{ title_secondary }}
     div(v-show="count < count_max")
       strong QUESTION {{ current }}
-      h1(v-for="question in questions", v-if="count == question.id") {{ current }} {{ question.summary }}
+      h1(v-for="question in questions", v-if="count == question.id") {{ question.summary }}
       ul(v-for="question in questions", v-if="count == question.id")
         li
-          button(v-on:click="getNext(0)") Yes
+          button(v-show="count < (count_max - 1)", v-on:click="getNext(0)") Yes
+          router-link(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ path: '/result', query: { id: getId()}}") Yes
         li
-          button(v-on:click="getNext(1)") No
-    div(v-show="count > 0 && count < count_max")
-      p
-        button(v-on:click="getPrevious()") 前の質問にもどる
-      p
-        button(v-on:click="init()") 最初からやり直す
+          button(v-show="count < (count_max - 1)", v-on:click="getNext(1)") No
+          router-link(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ path: '/result', query: { id: getId()}}") No
     p(v-show="count !== count_max") {{ current }} / {{ count_max }}
-    div(v-show="count == count_max")
-      p
-        router-link(v-bind:to="{ path: '/result', query: { id: getId()}}") 結果をみる
     Footer
 </template>
 
@@ -151,7 +145,7 @@ export default {
   },
   data() {
     return {
-      title_primary: 'Achademic Diagnosis',
+      title_primary: 'Your Scola',
       title_secondary: '学問分野診断',
       count: 0,
       count_max: 20,
