@@ -1,19 +1,29 @@
 <template lang="pug">
-  .components
-    span.brand
-      img(src='/assets/images/logo-navischola.svg')
-    router-link(v-bind:to="{ name : 'Question', params : { id: 1 }}", tag='button') {{ start }}
-    router-link(v-bind:to="{ name : 'Network'}", tag='button') {{ network }}
-    section.section-primary
-      h1
-        img(src='/assets/images/logo-navischola-full.svg', :alt='title_primary + " | " + title_secondary + " - " + subtitle')
-      p {{ lead }}
-      p
-        small {{ note }}
-    section.section-secondary
-      img(src='/assets/images/lenna.png')
-    section.section-thirtiary
-      ScholaScope
+  .home
+    section.section-heading-primary
+      .section-content
+        h1
+          img.brand(src='/assets/images/logo-navischola-full.svg', :alt='title_primary + " | " + title_secondary + " - " + subtitle')
+        p.lead {{ lead }}
+        p.footage
+          small {{ note }}
+    section.section-question
+      .section-content
+        router-link.nav-left.button-primary.button-lg(v-bind:to="{ name : 'Question', params : { id: 1 }}", tag='button')
+          i.icon-oval.icon-chevron-left
+          span {{ start }}
+          i.icon-oval.icon-chevron-right
+    section.section-description
+      .section-content
+        p.lead {{ lead }}
+        p.footage
+          small {{ note }}
+    section.section-scope
+      .section-content
+        ScholaScope
+        router-link.nav-right.button-primary.button-lg(v-bind:to="{ name : 'Network'}", tag='button')
+          span {{ network }}
+          i.icon-oval.icon-chevron-right
     Footer
 </template>
 
@@ -41,9 +51,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../assets/styles/main.scss";
-
-  h1 > small {
-    display: block;
-  }
+  @import "../assets/styles/main.scss";
 </style>

@@ -1,11 +1,14 @@
 <template lang="pug">
-  div
-    h1
-      small {{ title_secondary }}
-      | {{ title_primary }}
+  .network
+    section.section-heading-secondary
+      .section-content
+        h1
+          img(src='/assets/images/title-schola-scope.svg', :alt='title')
+    router-link.nav-left.button-primary.button-lg(v-bind:to="{ name : 'Home'}", tag='button')
+      i.icon-oval.icon-chevron-left
+      span {{ back }}
+      i.icon-oval.icon-chevron-right
     ScholaScope
-    p
-      router-link(v-bind:to="{ name : 'Home'}", tag='button') {{ back }}
     Footer
 </template>
 
@@ -24,12 +27,15 @@ export default {
       title_secondary: '学問分野相関図',
       back: 'もどる'
     }
+  },
+  computed: {
+    title() {
+      return this.title_primary + ' | ' + this.title_secondary
+    }
   }
 }
 </script>
 
 <style lang="scss">
-  h1 > small {
-    display: block;
-  }
+@import "../assets/styles/main.scss";
 </style>

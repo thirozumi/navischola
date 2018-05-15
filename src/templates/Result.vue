@@ -1,33 +1,42 @@
 <template lang="pug">
-  div
-    Header
-    h1 {{ title_primary }}
-      small {{ title_secondary }}
+  .result
+    section.section-heading-secondary
+      .section-content
+        h1
+          img(src='/assets/images/title-your-schola.svg', :alt="title")
     div(v-for="result in results", v-if="result.id == $route.query.id")
       h2(v-if="result.name_primary !== null") {{ result.name_primary }}
       h3 {{ result.name_secondary }}
       p {{ result.summary }}
       p(v-if="result.map !== null")
         img(v-bind:src="result.map")
-    p
-      router-link(v-bind:to="{ name : 'Question' }", tag='button') {{ button }}
+      router-link.nav-left.button-primary.button-lg(v-bind:to="{ name : 'Question'}", tag='button')
+        i.icon-oval.icon-chevron-left
+        span {{ again }}
+        i.icon-oval.icon-chevron-right
+      router-link.nav-right.button-primary.button-lg(v-bind:to="{ name : 'Network'}", tag='button')
+        span {{ network }}
+        i.icon-oval.icon-chevron-right
     Footer
+    Share      
 </template>
 
 <script>
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
+import Share from '../components/Share.vue'
 
 export default {
   name: 'Result',
   components: {
-    Header, Footer
+    Header, Footer, Share
   },
   data() {
     return {
       'title_primary': 'Academic Atlas',
       'title_secondary': '学問のいまを映す「知の見取り図」',
-      'button': 'もう一度診断する',
+      'again': 'もう一度診断する',
+      'network': '学問分野相関図をみる',
       'results': [
         {
           'id': 0,
@@ -109,7 +118,5 @@ export default {
 </script>
 
 <style lang="scss">
-  h1 > small {
-    display: block;
-  }
+  @import "../assets/styles/main.scss";
 </style>

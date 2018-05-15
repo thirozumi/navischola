@@ -1,11 +1,12 @@
 <template lang="pug">
-  div
-    button.btn(type='button', @click='showModal')
+  footer(role='content-info')
+    router-link.brand-sm(to="/")
+      img(src='/assets/images/logo-navischola.svg')
+    a.about(href='#', @click='showModal', onclick="return false")
       | {{ about }}
     Modal(v-show='isModalVisible', @close='closeModal')
-    footer
-      p.copyright
-        small(v-html='copyright')
+    .copyright
+      small(v-html='copyright')
 </template>
 
 <script>
