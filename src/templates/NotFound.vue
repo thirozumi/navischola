@@ -1,5 +1,5 @@
 <template lang="pug">
-  div
+  .template-not-found
     Header
     h2 {{ title }}
     Footer

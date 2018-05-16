@@ -1,30 +1,31 @@
 <template lang="pug">
-  .home
-    section.section-heading-primary
-      .section-content
-        h1
-          img.brand(src='/assets/images/logo-navischola-full.svg', :alt='title_primary + " | " + title_secondary + " - " + subtitle')
-        p.lead {{ lead }}
-        p.footage
-          small {{ note }}
-    section.section-question
-      .section-content
-        router-link.nav-left.button-primary.button-lg(v-bind:to="{ name : 'Question', params : { id: 1 }}", tag='button')
-          i.icon-oval.icon-chevron-left
-          span {{ start }}
-          i.icon-oval.icon-chevron-right
-    section.section-description
-      .section-content
-        p.lead {{ lead }}
-        p.footage
-          small {{ note }}
-    section.section-scope
-      .section-content
-        ScholaScope
-        router-link.nav-right.button-primary.button-lg(v-bind:to="{ name : 'Network'}", tag='button')
-          span {{ network }}
-          i.icon-oval.icon-chevron-right
-    Footer
+  transition(name='h')
+    .template-home
+      section.section-heading-primary
+        .section-content
+          h1
+            img.brand(src='/assets/images/logo-navischola-full.svg', :alt='title_primary + " | " + title_secondary + " - " + subtitle')
+          p.lead {{ lead }}
+          p.footage
+            small {{ note }}
+      section.section-question
+        .section-content
+          router-link.nav-left.button-primary.button-lg(v-bind:to="{ name : 'Question', params : { id: 1 }}", tag='button')
+            i.icon-oval.icon-chevron-left
+            span {{ start }}
+            i.icon-oval.icon-chevron-right
+      section.section-description
+        .section-content
+          p.lead {{ lead }}
+          p.footage
+            small {{ note }}
+      section.section-scope
+        .section-content
+          ScholaScope
+          router-link.nav-right.button-primary.button-lg(v-bind:to="{ name : 'Network'}", tag='button')
+            span {{ network }}
+            i.icon-oval.icon-chevron-right
+      Footer
 </template>
 
 <script>
@@ -52,4 +53,10 @@ export default {
 
 <style lang="scss">
   @import "../assets/styles/main.scss";
+  .h-enter-active, .h-leave-active {
+    transition: all .5s;
+  }
+  .h-enter, .h-leave-to {
+    opacity: 0;
+  }
 </style>

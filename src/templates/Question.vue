@@ -1,22 +1,22 @@
 <template lang="pug">
-  .question
+  .template-question
     section.section-heading-secondary
       .section-content
         h1
           img(src='/assets/images/title-your-schola.svg', :alt="title")
-    section.section-question-main(v-show="count < count_max")
-      .section-content
-        .question-title
-          strong QUESTION {{ current }}
-        h1.question-summary(v-for="question in questions", v-if="count == question.id", v-html='question.summary')
-        ul.list-horizontal(v-for="question in questions", v-if="count == question.id")
-          li
-            button.button-primary(v-show="count < (count_max - 1)", v-on:click="getNext(0)") YES
-            router-link.button-primary(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ path: '/result', query: { id: getId()}}") YES
-          li
-            button.button-primary(v-show="count < (count_max - 1)", v-on:click="getNext(1)") NO
-            router-link.button-primary(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ path: '/result', query: { id: getId()}}") NO
-        p.question-count(v-show="count !== count_max") {{ current }} / {{ count_max }}
+      section.section-question-main(v-show="count < count_max")
+        .section-content
+          .question-title
+            strong QUESTION {{ current }}
+          h1.question-summary(v-for="question in questions", v-if="count == question.id", v-html='question.summary')
+          ul.list-horizontal(v-for="question in questions", v-if="count == question.id")
+            li
+              button.button-primary(v-show="count < (count_max - 1)", v-on:click="getNext(0)") YES
+              router-link.button-primary(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ path: '/result', query: { id: getId()}}") YES
+            li
+              button.button-primary(v-show="count < (count_max - 1)", v-on:click="getNext(1)") NO
+              router-link.button-primary(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ path: '/result', query: { id: getId()}}") NO
+          p.question-count(v-show="count !== count_max") {{ current }} / {{ count_max }}
     Footer
 </template>
 
@@ -225,5 +225,11 @@ export default {
 
 <style lang="scss">
 @import "../assets/styles/main.scss";
-
+.s-enter-active, .s-leave-active {
+  transition: all .5s linear;
+}
+.s-enter, .s-leave-to {
+  opacity: 0;
+  transform: translate(1rem, 0);
+}
 </style>
