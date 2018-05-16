@@ -21,7 +21,7 @@
           i.icon-oval.icon-chevron-left
           span {{ again }}
           i.icon-oval.icon-chevron-right
-        router-link.nav-right.button-primary.button-lg(v-bind:to="{ name : 'Network'}", tag='button')
+        router-link.nav-right.button-primary.button-lg(v-bind:to="{ path: '/network', query: { id: $route.query.id}}", tag='button')
           span {{ network }}
           i.icon-oval.icon-chevron-right
       Footer

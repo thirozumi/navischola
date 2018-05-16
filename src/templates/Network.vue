@@ -5,7 +5,11 @@
         .section-content
           h1
             img(src='/assets/images/title-schola-scope.svg', :alt='title')
-      router-link.nav-left.button-primary.button-lg(v-bind:to="{ name : 'Home'}", tag='button')
+      router-link.nav-left.button-primary.button-lg(v-if="$route.query.id", v-bind:to="{ path : 'result', 'query': { id: $route.query.id}}", tag='button')
+        i.icon-oval.icon-chevron-left
+        span {{ back }}
+        i.icon-oval.icon-chevron-right
+      router-link.nav-left.button-primary.button-lg(v-else, v-bind:to="{ name : 'Home'}", tag='button')
         i.icon-oval.icon-chevron-left
         span {{ back }}
         i.icon-oval.icon-chevron-right
