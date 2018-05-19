@@ -20,7 +20,7 @@ export default {
   data() {
     return {
       isModalVisible: false,
-      'about': 'About Navischola',
+      'about': 'About NaviSchola',
       'copyright': 'Copyright &copy; Kyoto University. All Rights Reserved.'
     }
   },
