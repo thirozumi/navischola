@@ -3,13 +3,13 @@
     .template-result
       section.section-heading-secondary
         .section-content
-          h2
+          h1
             img(src='/assets/images/title-your-schola.svg', :alt="'title_primary' + ' | ' + 'title_secondary'")
       .result-container(v-for="result in results", v-if="result.id == $route.query.id")
         .result-body
           .result-heading
             h3 診断結果
-            h1(v-if="result.name_primary !== null")
+            h2(v-if="result.name_primary !== null")
               small {{ result.name_primary }}
               | {{ result.name_secondary }}
               span タイプ
