@@ -175,9 +175,10 @@ export default {
 <style lang="scss">
   @import "../assets/styles/main.scss";
   .r-enter-active, .r-leave-active {
-    transition: all .5s;
+    transition: all .4s;
   }
   .r-enter, .r-leave-to {
     opacity: 0;
+    transform: scale(0.9);
   }
 </style>

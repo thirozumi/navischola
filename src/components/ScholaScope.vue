@@ -18,17 +18,14 @@ export default {
   },
   mounted: function() {
 
-    // Safari check for zoom function
-    let ua = navigator.userAgent.toLowerCase();
-    let isSafari = (ua.indexOf('safari') > -1) && (ua.indexOf('chrome') === -1);
-
     // SmartPhone check for node function
     let isSp =  ((navigator.userAgent.indexOf('iPhone') > 0 ||
-        navigator.userAgent.indexOf('iPad') > 0) ||
-        navigator.userAgent.indexOf('iPod') > 0 ||
-        navigator.userAgent.indexOf('Android') > 0)
+                  navigator.userAgent.indexOf('iPad') > 0) ||
+                  navigator.userAgent.indexOf('iPod') > 0 ||
+                  navigator.userAgent.indexOf('Android') > 0)
 
     console.log("isSp", isSp)
+
 
     d3.json("/assets/data/data.json", function(error, data){
       let dataSet = data;
@@ -50,6 +47,9 @@ export default {
         dataSet.edges[e].color  = nColor
       }
 
+      console.log(dataSet.nodes[0])
+
+
         /*
         for(var n=0, l2=dataSet.nodes.length; l2>n; n++ ) {
             console.log(dataSet.nodes[n].attributes)
@@ -70,28 +70,43 @@ export default {
 
       /* //Legend// */
 
+      /*
       let legendName = ["農学・環境学系", "社会科学系", "数学系", "物理系", "人文学系",
                         "自然系", "医歯薬学系", "言語・心理学系", "化学系","工学系",
                         "工学・情報", "生物学系"];
+      */
 
+      let legendName = ["医歯薬学", "情報学", "人文学", "生物学", "社会科学",
+                        "数物系科学", "総合理工", "環境学", "化学","複合領域",
+                        "農学", "工学"];
+
+      /*
       let InitPos = [{"x":1200,"y":200}, {"x":1500,"y":1000}, {"x":800,"y":2000}, {"x":500,"y":1500}, {"x":2200,"y":1000},
                      {"x":1300,"y":0}, {"x":1200,"y":1500}, {"x":600,"y":1300}, {"x":2000,"y":700}, {"x":2800,"y":1500},
                      {"x":2000,"y":600}, {"x":600,"y":400}];
+      */
 
-      let legendPos = [{"x":600,"y":300}, {"x":700,"y":450}, {"x":450,"y":700}, {"x":300,"y":550}, {"x":950,"y":400},
-                        {"x":550,"y":100}, {"x":700,"y":550}, {"x":450,"y":600}, {"x":800,"y":400}, {"x":950,"y":600},
-                        {"x":850,"y":300}, {"x":450,"y":300}];
+      let legendPos = [{"x":780,"y":600}, {"x":370,"y":750}, {"x":600,"y":600}, {"x":450,"y":300}, {"x":790,"y":345},
+                       {"x":370,"y":575}, {"x":410,"y":640}, {"x":470,"y":185}, {"x":550,"y":800}, {"x":700,"y":700},
+                       {"x":570,"y":410}, {"x":1000,"y":620}];
 
       let legendColor = ["rgb(255,122,26)", "rgb(255,131,255)", "rgb(137,84,123)", "rgb(0,217,255)", "rgb(194,172,0)",
                          "rgb(46,150,161)", "rgb(66,211,0)"   , "rgb(255,93,149)", "rgb(0,202,144)", "rgb(209,130,86)",
                          "rgb(84,176,255)", "rgb(70,99,39)"];
 
+      let InitNodeId = [69, 1, 110, 30, 27, 126, 135, 2, 68, 32, 98, 42];
+
+      /*
+      let legendColor = ["#1a305e", "#1a305e", "#1a305e", "#1a305e", "#1a305e",
+                         "#1a305e", "#1a305e", "#1a305e", "#1a305e", "#1a305e",
+                         "#1a305e", "#1a305e"];
+      */
+
       for(let i=0, l=dataSet.nodes.length; l>i; i++ ) {
-        let mId = Number(dataSet.nodes[i].attributes['Modularity Class'])
+        //let mId = Number(dataSet.nodes[i].attributes['Modularity Class'])
+        let mId = Number(dataSet.nodes[i]['attributes.Modularity Class'])
          dataSet.nodes[i].color = legendColor[mId];
       }
-
-      console.log(legendColor)
 
       let svg = d3.select("#myGraph");
       let g = svg.append("g");
@@ -112,12 +127,20 @@ export default {
           .friction(0.80)
           .start();
 
+
+      /* //Continually move// */
+      //d3.timer(function(){
+      //    force.alpha(0.1);
+      //});
+
       /* //Static Network// */
       // for picture
-      let keyDown = 0;
-
       let selectorBody = $("body");
 
+      // for Test code
+      ///////////////////////////////////////////////////////////////////
+      /*
+      let keyDown = 0;
       selectorBody.on("keydown", function(){
         if (keyDown===0){
           force.stop(); //force レイアウトの計算を終了
@@ -129,7 +152,8 @@ export default {
           keyDown = 0
         }
       });
-
+      */
+      ///////////////////////////////////////////////////////////////////
 
       /* //Drawing// */
       // default node opacity:0.6
@@ -143,7 +167,8 @@ export default {
           .attr("opacity", "0.5")
           .attr("stroke-width", function(d){ return Math.sqrt(d.size) + d.size * 0.1})
           //.attr("stroke", function(d){ return color(d.group_id)})
-          .attr("stroke", function(d){ return d.color})
+          //.attr("stroke", function(d){ return d.color})
+          .attr("stroke", "#ffffff")
           ;
 
       let node = g.append("g")
@@ -158,8 +183,9 @@ export default {
           //.attr("r", function(d,i){return Math.sqrt(d.size) * 3 + 3;})
           .attr("r", function(d){return d.size * 1.1 + 1;})
           //.attr("fill", function(d,i){return color(d.group_id)})
-          .attr("fill", function(d){ return d.color})
-          .attr("stroke", "#fffcf9");
+          //.attr("fill", function(d){ return d.color})
+          .attr("fill", "#ffffff")
+          .attr("stroke", "#ffffff");
 
       node.append("text")
           .attr("dx", "-1.0em")
@@ -169,7 +195,7 @@ export default {
           .text(function(d) { return d.id; })
           .attr("class", "nonDrag")
           .attr("opacity", "0.8")
-          .attr("fill", "#352622")
+          .attr("fill", "#1a305e")
           .attr({"font-family": ["ヒラギノ角ゴ ProN W3","游ゴシック体","sans-serif"]});
 
       for (let i=0, l=legendPos.length; l>i; i++){
@@ -177,7 +203,8 @@ export default {
             .attr("x", legendPos[i].x)
             .attr("y", legendPos[i].y)
             .text(legendName[i])
-            .attr("fill", legendColor[i])
+            //.attr("fill", legendColor[i])
+            .attr("fill", "#1a305e")
             .attr("class", "legendOff")
             .attr("id", "legend" + i)
             .attr("opacity", "0.0")
@@ -199,8 +226,10 @@ export default {
       let pos11x, pos11y;
 
 
-      if (!isSp){
+      //if (!isSp){
+      if (true){
         setInterval(function(){
+          /*
           pos0x = (Number(dataSet.nodes[92].x) + Number(dataSet.nodes[79].x)) / 2;
           pos0y = (Number(dataSet.nodes[92].y) + Number(dataSet.nodes[79].y)) / 2;
           pos1x = (Number(dataSet.nodes[102].x) + Number(dataSet.nodes[122].x)) / 2;
@@ -225,6 +254,32 @@ export default {
           pos10y = (Number(dataSet.nodes[6].y) + Number(dataSet.nodes[97].y)) / 2;
           pos11x = (Number(dataSet.nodes[5].x) + Number(dataSet.nodes[72].x)) / 2;
           pos11y = (Number(dataSet.nodes[5].y) + Number(dataSet.nodes[72].y)) / 2;
+          */
+
+          pos0x = (Number(dataSet.nodes[69].x) + Number(dataSet.nodes[111].x)) / 2;
+          pos0y = (Number(dataSet.nodes[69].y) + Number(dataSet.nodes[111].y)) / 2;
+          pos1x = (Number(dataSet.nodes[1].x) + Number(dataSet.nodes[86].x)) / 2;
+          pos1y = (Number(dataSet.nodes[1].y) + Number(dataSet.nodes[86].y)) / 2;
+          pos2x = (Number(dataSet.nodes[110].x) + Number(dataSet.nodes[82].x)) / 2;
+          pos2y = (Number(dataSet.nodes[110].y) + Number(dataSet.nodes[82].y)) / 2;
+          pos3x = (Number(dataSet.nodes[30].x) + Number(dataSet.nodes[99].x)) / 2;
+          pos3y = (Number(dataSet.nodes[30].y) + Number(dataSet.nodes[99].y)) / 2;
+          pos4x = (Number(dataSet.nodes[27].x) + Number(dataSet.nodes[87].x)) / 2;
+          pos4y = (Number(dataSet.nodes[27].y) + Number(dataSet.nodes[87].y)) / 2;
+          pos5x = (Number(dataSet.nodes[126].x) + Number(dataSet.nodes[20].x)) / 2;
+          pos5y = (Number(dataSet.nodes[126].y) + Number(dataSet.nodes[20].y)) / 2;
+          pos6x = (Number(dataSet.nodes[135].x) + Number(dataSet.nodes[63].x)) / 2;
+          pos6y = (Number(dataSet.nodes[135].y) + Number(dataSet.nodes[63].y)) / 2;
+          pos7x = (Number(dataSet.nodes[2].x));
+          pos7y = (Number(dataSet.nodes[2].y) + 10);
+          pos8x = (Number(dataSet.nodes[68].x) + Number(dataSet.nodes[104].x)) / 2;
+          pos8y = (Number(dataSet.nodes[68].y) + Number(dataSet.nodes[104].y)) / 2;
+          pos9x = (Number(dataSet.nodes[32].x) + Number(dataSet.nodes[102].x)) / 2;
+          pos9y = (Number(dataSet.nodes[32].y) + Number(dataSet.nodes[102].y)) / 2;
+          pos10x = (Number(dataSet.nodes[98].x) + Number(dataSet.nodes[66].x)) / 2;
+          pos10y = (Number(dataSet.nodes[98].y) + Number(dataSet.nodes[66].y)) / 2;
+          pos11x = (Number(dataSet.nodes[42].x) + Number(dataSet.nodes[83].x)) / 2;
+          pos11y = (Number(dataSet.nodes[42].y) + Number(dataSet.nodes[83].y)) / 2;
 
 
           $("#legend0").attr("x", function(){ return pos0x})
@@ -256,33 +311,102 @@ export default {
 
 
       /* //Initial display1// */
-      let initNum  = Number(location.search.split('=')[1]);
-      console.log(initNum)
-      if (isNaN(initNum)){
-        initNum = 1
+      let initModu  = Number(location.search.split('=')[1]);
+      let initNum  = InitNodeId[initModu];
+      let initPos;
+      let scaleVal;
+      let tx, ty, tscale;
+      let displayNodeDuration;
+      let displayLegendDuration;
+      if (isNaN(initModu)||(initModu%1)!==0||initModu<0||initModu>11){
+        initPos = {"x":width,"y":height};
+        //initPos = InitPos[1]
+        scaleVal = 1.1;
+        if (isSp){
+          displayLegendDuration = 2000;
+        }else{
+          displayLegendDuration = 0;
+        }
+        displayNodeDuration = 0;
+      }else{
+        initPos = {"x":width,"y":height};//InitPos[initModu] //前の工程からうか取った結果(0〜11)を代入する(今initParaで行っている処理を行う)
+        scaleVal = 1.1
+        displayNodeDuration = 10000;
+        displayLegendDuration = 0;
       }
-      let initPos = InitPos[initNum] // 前の工程からうか取った結果(0〜11)を代入する(今initParaで行っている処理を行う)
-      g.attr("transform","translate(" + -initPos.x/2  + "," +  -initPos.y/2 +")scale(2.0,2.0)");
 
-      const initLegend = "#legend" + initNum;
+      //tx = -width/2 * (scaleVal-1) + (width/2 - initPos.x/2) * (scaleVal-1);
+      //ty = -height/2 * (scaleVal-1) + (height/2 - initPos.y/2) * (scaleVal-1);
+      tx = -initPos.x/2 * (scaleVal-1);
+      ty = -initPos.y/2 * (scaleVal-1);
+      tscale = "scale(" + scaleVal +"," + scaleVal + ")";
+      g.attr("transform","translate(" +  tx + "," + ty +")" + tscale); //中で計算するとエラーになる
+
+      const initLegend = "#legend" + initModu;
       console.log(initLegend)
 
-      //add zoom capabilities
-      let zoom_handler = d3.behavior.zoom()
+      //add zoom capabilities (for non-Sp)
+      let zoom = d3.behavior.zoom()
           .scaleExtent([0.1, 40])
           .on("zoom", zoom_actions)
-          .translate([-initPos.x/2, -initPos.y/2]).scale(2.0)
+          .translate([tx, ty]).scale(scaleVal)
 
 
       function zoom_actions(){
-        g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")")
-        //.translate(width / 3, height / 3);
-        //console.log(d3.event.translate, d3.event.scale)
-            //console.log("zoom");
-        if(mouseDown===0){
+        //g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")")
+        g.attr("transform", "translate(" + zoom.translate() + ")scale(" + zoom.scale() + ")")
+        if(mouseDown===0 && smartPhone===0){
           adjustLabel()
         }
       }
+
+      // http://bl.ocks.org/linssen/7352810
+      function interpolateZoom (translate, scale) {
+        let self = this;
+        let iTranslate;
+        let iScale;
+        return d3.transition().duration(350).tween("zoom", function () {
+          iTranslate = d3.interpolate(zoom.translate(), translate)
+          iScale = d3.interpolate(zoom.scale(), scale)
+          return function (t) {
+            zoom.scale(iScale(t))
+                .translate(iTranslate(t));
+            zoom_actions();
+          };
+        });
+      }
+
+      function zoomClick() {
+        let clicked = d3.event.target,
+            direction = 1,
+            factor = 0.2,
+            target_zoom = 1,
+            center = [width / 2, height / 2],
+            extent = zoom.scaleExtent(),
+            translate = zoom.translate(),
+            translate0 = [],
+            l = [],
+            view = {x: translate[0], y: translate[1], k: zoom.scale()};
+
+        d3.event.preventDefault();
+        direction = (this.id === 'zoomIn') ? 1 : -1;
+        target_zoom = zoom.scale() * (1 + factor * direction);
+
+        if (target_zoom < extent[0] || target_zoom > extent[1]) { return false; }
+
+        translate0 = [(center[0] - view.x) / view.k, (center[1] - view.y) / view.k];
+        view.k = target_zoom;
+        l = [translate0[0] * view.k + view.x, translate0[1] * view.k + view.y];
+
+        view.x += center[0] - l[0];
+        view.y += center[1] - l[1];
+
+        interpolateZoom([view.x, view.y], view.k);
+      }
+
+      d3.selectAll('.zoomButton').on('click', zoomClick);
+
+
 
       //adjust label to show or hide dependent on scale
       function adjustLabel(){
@@ -302,14 +426,91 @@ export default {
           $("circle").parent().children('text').attr("class", "bigText")
           //legendForScale.attr("class", "legendOff")
         }
-        console.log(getScale())
+        // console.log(getScale(), g.attr("transform"))
       }
+
+      // call zoom function
+      /*
+      if (!isSp){
+        svg.call(zoom)
+            .on("wheel.zoom", null)
+            .on("dblclick.zoom", null);
+      }else{
+        svg.call(zoom)
+            .on("wheel.zoom", null)
+            .on("dblclick.zoom", null)
+            .on("touchcancel.zoom", null)
+            //.on("touchstart.zoom", null);
+        console.log('sp')
+      }
+      */
+
+
+      /*var lastTouch = 0;
+      document.addEventListener('touchend', event => {
+        console.log('db-tap')
+        var now = window.performance.now();
+        if (now - lastTouch <= 500) {
+          console.log('prvent')
+          event.preventDefault();
+        }
+        lastTouch = now;
+      }, true);
+      */
+
+
+      let last_touch_time = undefined;
+      let touchstart = function() {
+        let touch_time = d3.event.timeStamp;
+        if (touch_time-last_touch_time < 500 && d3.event.touches.length===1) {
+          d3.event.stopPropagation();
+          last_touch_time = undefined;
+          return;
+        }
+        last_touch_time = touch_time;
+      };
+
+
+
+      svg.call(zoom)
+          //.on("wheel.zoom", null)
+          //.on("dblclick.zoom", null);
+
+      //d3.select('.background').on('touchstart.zoom', touchstart);
+      //svg.on('touchstart.zoom', touchstart);
+
+
+      document.addEventListener('touchstart', event => {
+        if (event.touches.length > 1) {
+          console.log('touchstart2')
+          event.preventDefault();
+        }
+      }, true);
+
+
+      let lastTouch = 0;
+      document.addEventListener('touchend', event => {
+        const now = window.performance.now();
+        if (now - lastTouch <= 500) {
+          event.preventDefault();
+        }
+        lastTouch = now;
+      }, true);
+
+
+
+
+      let aaa = $('g').css('transform');
+      console.log(aaa)
+      console.log(aaa === "none")
+
 
       /* get scale value */
       function getScale(){
         let scale
-        if(!isSafari){
-          let scale_ = $('g').css('transform');
+        let scale_ = $('g').css('transform');
+        if(scale_ !== "none"){
+
 
           //to decompose matrix
           let values = scale_.split("(")[1];
@@ -325,18 +526,8 @@ export default {
         }return scale;
       }
 
-      svg.call(zoom_handler);
       adjustLabel()
       legendForScale.attr("class", "legendOff")
-
-      // coloring selected category
-      if (isSp) {
-        setTimeout(() => {$(initLegend).attr("class", "legend")}, 2000)
-      }else{
-        $(initLegend).attr("class", "legend")
-      }
-
-      //Coloring.initColor(10)
 
       // to enclose node in SVG
       const wallMargin = 7.5;
@@ -406,11 +597,14 @@ export default {
       class Coloring {
         static coloring(d, type) {
           let cssNode
+          let cssNodeSame
+          let cssNodeDiff
           let cssText
           let cssLine
           if (type === 'color') {
             cssLine = "lineColor"
-            cssNode = "nodeColor"
+            cssNodeSame = "nodeColorSame"
+            cssNodeDiff = "nodeColorDiff"
             cssText = "linkedNodeText"
           } else {
             cssLine = "lineColorDefault"
@@ -418,8 +612,11 @@ export default {
             cssText = "textSizeDefault"
           }
 
-          let nodeIndex = d.index;console.log("nodeIndex is",nodeIndex)
+          let nodeIndex = d.index;  // console.log("nodeIndex is",nodeIndex)
           let circle = $("circle");
+          if (type === 'color') {
+            Coloring.sameModu(d['attributes.Modularity Class'])
+          }
           for (let i = 0, l = dataSet.edges.length; l > i; i++) {
             if (dataSet.edges[i].source.index === nodeIndex ||
                 dataSet.edges[i].target.index === nodeIndex) {
@@ -434,8 +631,20 @@ export default {
 
               let selectNodeSource = d3.selectAll("circle")[0][nodeSource]; //node which match source index number
               let selectNodeTarget = d3.selectAll("circle")[0][nodeTarget]; //node which match target index number
-              $(selectNodeSource).attr("class", cssNode)//node color
-              $(selectNodeTarget).attr("class", cssNode)//node color
+              if (type === 'color'){
+                if (dataSet.edges[lineIndex].source['attributes.Modularity Class'] ===
+                    dataSet.edges[lineIndex].target['attributes.Modularity Class']){
+                  $(selectNodeSource).attr("class", cssNodeSame)//node color
+                  $(selectNodeTarget).attr("class", cssNodeSame)//node color
+                }else{
+                  $(selectNodeSource).attr("class", cssNodeDiff)//node color
+                  $(selectNodeTarget).attr("class", cssNodeDiff)//node color
+                }
+
+              }else{
+                $(selectNodeSource).attr("class", cssNode)//node color
+                $(selectNodeTarget).attr("class", cssNode)//node color
+              }
 
               let selectNodeSource2 = circle.parent().children('text')[nodeSource]//text which match source index number
               let selectNodeTarget2 = circle.parent().children('text')[nodeTarget]//text which match target index number
@@ -443,10 +652,40 @@ export default {
               $(selectNodeTarget2).attr("class", cssText)//node text color
             }
           }
+          if (type === 'color') {
+            $(d3.selectAll("circle")[0][nodeIndex]).attr("class", cssNodeSame)//node color
+            //Coloring.sameModu(d['attributes.Modularity Class'])
+          }
           if (type !== 'color') {
             adjustLabel()
           }
+
+          return nodeIndex;
         }
+
+        static sameModu(modularity) {
+          for (let i = 0, l = dataSet.nodes.length; l > i; i++) {
+            if (dataSet.nodes[i]['attributes.Modularity Class'] === modularity) {
+              let selectNodeSource = d3.selectAll("circle")[0][i];
+              $(selectNodeSource).attr("class", "nodeColorSameNonConnection");
+
+              let selectNodeSource2 = $("circle").parent().children('text')[i]//text which match source index number
+              $(selectNodeSource2).attr("class", "linkedNodeText")//node text color
+            }
+          }
+        }
+
+        static legend(d){
+          let legendID = d['attributes.Modularity Class'];
+          $(".legend").attr("class", "notSelectedLegend")
+          $(".legendOff").attr("class", "notSelectedLegend")
+          $(".selectedLegend").attr("class", "notSelectedLegend")
+          $(".notSelectedLegend").attr("class", "notSelectedLegend")
+          $("#legend" + legendID).attr("class", "selectedLegend")
+          //$(".legend").addClass("notSelectedLegend")
+          //$("#legend" + legendID).removeClass('selectedLegend').addClass("selectedLegend")
+        }
+
 
         static fade(type){
           let cssNode
@@ -454,8 +693,8 @@ export default {
           let cssLine
           if (type === 'colorFade') {
             cssLine = "lineColorFade"
-            cssNode = "nodeColorFade"
             cssText = "nodeTextFade"
+            cssNode = "nodeColorFade"
           } else {
             cssLine = "lineReturnFade"
             cssNode = "nodeReturnFade"
@@ -496,12 +735,6 @@ export default {
           body.css({"cursor": [grabType]});
         }
 
-        static sound(type, volume){
-          // ion.sound.play(type,{
-          //   volume:volume // turn down
-          // });
-        }
-
         static initColor(index) {
           let nodeIndex = index;
           let circle = $("circle");
@@ -532,6 +765,8 @@ export default {
 
         static initColor_(index) {
           let nodeIndex = index;
+          let circle = $("circle");
+          Coloring.sameModu(initModu)
           for (let i = 0, l = dataSet.edges.length; l > i; i++) {
             if (dataSet.edges[i].source.index === nodeIndex ||
                 dataSet.edges[i].target.index === nodeIndex) {
@@ -539,45 +774,176 @@ export default {
               let lineIndex = i;
 
               let selectLine = d3.selectAll("line")[0][lineIndex]; //node which match index number
-              $(selectLine).attr("class", "lineReturnFade")//node color
+              $(selectLine).attr("class", "lineColor")//node color
 
               let nodeSource = dataSet.edges[lineIndex].source.index;
               let nodeTarget = dataSet.edges[lineIndex].target.index;
 
               let selectNodeSource = d3.selectAll("circle")[0][nodeSource]; //node which match source index number
               let selectNodeTarget = d3.selectAll("circle")[0][nodeTarget]; //node which match target index number
-              $(selectNodeSource).attr("class", "nodeReturnFade")//node color
-              $(selectNodeTarget).attr("class", "nodeReturnFade")//node color
+
+              console.log(dataSet.edges[lineIndex])
+              if (dataSet.edges[lineIndex].source['attributes.Modularity Class'] ===
+                  dataSet.edges[lineIndex].target['attributes.Modularity Class']){
+                $(selectNodeSource).attr("class", "nodeColorSame")//node color
+                $(selectNodeTarget).attr("class", "nodeColorSame")//node color
+                console.log(selectNodeSource)
+                console.log(selectNodeTarget)
+                console.log("cssNodeSame")
+              }else{
+                $(selectNodeSource).attr("class", "nodeColorDiff")//node color
+                $(selectNodeTarget).attr("class", "nodeColorDiff")//node color
+                console.log("cssNodeDiff")
+              }
+              $(d3.selectAll("circle")[0][nodeIndex]).attr("class", "nodeColorSame")//node color
+
+
+              let selectNodeSource2 = circle.parent().children('text')[nodeSource]//text which match source index number
+              let selectNodeTarget2 = circle.parent().children('text')[nodeTarget]//text which match target index number
+              $(selectNodeSource2).attr("class", "linkedNodeText")//node text color
+              $(selectNodeTarget2).attr("class", "linkedNodeText")//node text color
             }
           }
         }
 
-
+        /*
         static initColoring(modularity) {
-          let modu = modularity.toString()
-          console.log(modu)
+          console.log('initColoring now')
+          //let modu = modularity//.toString()
+          //console.log(modu)
           for (let i = 0, l = dataSet.nodes.length; l > i; i++) {
-            if (dataSet.nodes[i].attributes['Modularity Class'] === modu){
+            //if (dataSet.nodes[i].attributes['Modularity Class'] === modu){
+            if (dataSet.nodes[i]['attributes.Modularity Class'] === modularity){
               let selectNodeSource = d3.selectAll("circle")[0][i];
               $(selectNodeSource).attr("class", "nodeColor");
-              Coloring.initColor_(i)
+              Coloring.initColor_(i) // 対象のmodularityとつながっているnodeに色付け
             }
           }
         }
+        */
+      }
+
+      /* //Mouse action// */
+      // mouse over >>> color selected node, conected node & line
+      if (!isSp){
+        node.on("mouseover", function(d){
+          Coloring.coloring(d,'color')
+          Coloring.legend(d);
+          nodeOn = 1;
+
+          console.log(d.index,  d.id, event.pageX , event.pageY)
+        });
+
+        // mouse out >>> to default color
+        node.on("mouseout", function(d){
+          //Coloring.coloring(d,'fade')
+          Coloring.fade("colorFade")
+          $(".notSelectedLegend").attr("class", "selectedLegend")
+          nodeOn = 0;
+        });
+
+        // mouse down >>> to make not conected node & line fade
+        node.on("mousedown", function(d){
+          /*
+          Coloring.fade("colorFade")
+          Coloring.coloring(d,'color')
+          Coloring.cursor("grabbing")
+          */
+        });
+
+        // mouse up >>> to default color (in the case mouse up outside SVG, to defalt color)
+        selectorBody.on("mouseup", function(d){
+          /*
+          //at first, make all node & line default
+          Coloring.fade("returnFade", d)
+          Coloring.cursor("grab")
+          adjustLabel()
+          */
+        });
+      }
+
+
+
+      /////////////////////////////////////////////////////////////
+      // for SmartPhone
+      let smartPhone = 0;
+      let nodeIndex;
+      if (isSp){
+
+        let touchmove = 0
+        svg.on("touchmove", function(){
+          touchmove = 1
+        });
+
+        svg.on("touchend", function(){
+          if (touchmove === 0){
+            Coloring.fade("colorFade")
+            $(".notSelectedLegend").attr("class", "selectedLegend")
+          }
+          touchmove = 0
+        });
+
+
+        node.on("touchstart", function(d){
+            console.log(d.index,  d.id, d['attributes.Modularity Class'])
+            Coloring.fade("colorFade")
+            nodeIndex = Coloring.coloring(d,'color')
+            Coloring.legend(d);
+            smartPhone = 1;
+            d3.event.stopPropagation();
+
+        });
+
+        node.on("touchend", function(){
+            d3.event.stopPropagation();
+
+        });
+
+        setTimeout(() => {
+          force.stop(); //force レイアウトの計算を終了
+          node.each(function(d){
+            //d.fixed = true
+          })
+
+        }, 10000)
+      }
+
+      /////////////////////////////////////////////////////////////
+
+      // add reset function mainly for sp
+      /*
+      d3.selectAll('#reset').on('click', reset);
+      function reset(){
+        scaleVal = 1.1;
+        tx = -initPos.x/2 * (scaleVal-1);
+        ty = -initPos.y/2 * (scaleVal-1);
+        interpolateZoom([tx, ty], scaleVal);
+
+        Coloring.fade("returnFade")
+
+        smartPhone = 0;
+      }
+      */
+
+
+      // coloring selected category
+      if (isSp) {
+        setTimeout(() => {$(initLegend).attr("class", "legend")}, 2000)
+      }else{
+        $(initLegend).attr("class", "legend")
       }
 
       /* //Initial display2// */
-
       let promise = new Promise((resolve, reject) => { // #1
         resolve(Coloring.fade("colorFade"))
         console.log('#1 Coloring.fade')
         reject('error')
       })
-
       promise.then(() => { // #2
         return new Promise((resolve, reject) => {
           //resolve(Coloring.initColor(initPara))
-          resolve(Coloring.initColoring(initNum))
+          //resolve(Coloring.initColoring(initNum))
+          resolve(Coloring.initColor_(initNum))
           reject('error')
           console.log('#2 Coloring.initColor')
         })
@@ -586,115 +952,31 @@ export default {
           setTimeout(() => {
             resolve(Coloring.fade("returnFade"))
             $("circle").parent().children('text').attr("class", "smallText")
+            //legendForScale.attr("class", "legend")
             reject('error')
             console.log('#3 Coloring.fade')
-
-            legendForScale.attr("class", "legend")
-          }, 5000)
-          console.log('#3_')
+          }, displayNodeDuration)
+        })
+      }).then(() => { // #3
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve(legendForScale.attr("class", "legend"))
+            reject('error')
+            console.log('#4 Coloring legend')
+          }, displayLegendDuration)
         })
       }).catch(() => {
         Coloring.fade("returnFade")
         console.error('Something wrong! => Coloring.fade')
       })
 
-
-
-
-      /* //Mouse action// */
-      // mouse over >>> color selected node, conected node & line
-      if (!isSp){
-        node.on("mouseover", function(d){
-          Coloring.coloring(d,'color')
-
-          if (mouseDown === 0) {
-            //Coloring.sound("mouseover", 0.1)
-          }
-          nodeOn = 1;
-        });
-
-        // mouse out >>> to default color
-        node.on("mouseout", function(d){
-          Coloring.coloring(d,'fade')
-          nodeOn = 0;
-        });
-
-        // mouse down >>> to make not conected node & line fade
-        node.on("mousedown", function(d){
-          Coloring.fade("colorFade")
-          Coloring.coloring(d,'color')
-          Coloring.cursor("grabbing")
-          //Coloring.sound("grabNode", 0.2)
-        });
-
-        // mouse up >>> to default color (in the case mouse up outside SVG, to defalt color)
-        selectorBody.on("mouseup", function(d){
-          //at first, make all node & line default
-          Coloring.fade("returnFade", d)
-          Coloring.cursor("grab")
-          adjustLabel()
-        });
-
-        // mouse up sound
-        node.on("mouseup", function(){
-          //Coloring.sound("releaseNode", 0.5);
-        });
-        console.log("PC")
-      }
-
-
-      /////////////////////////////////////////////////////////////
-      // for SmartPhone
-      let smartPhone = 0;
-      if (isSp){
-        console.log(smartPhone)
-        // mouse down >>> to make not conected node & line fade
-        node.on("touchstart", function(d){
-          if (smartPhone === 0){
-            Coloring.fade("colorFade")
-            Coloring.coloring(d,'color')
-            Coloring.cursor("grabbing")
-            //Coloring.sound("grabNode", 0.2)
-            smartPhone = 1;
-          }else {
-            Coloring.fade("returnFade", d)
-            Coloring.cursor("grab")
-            adjustLabel()
-            Coloring.sound("releaseNode", 0.5);
-            smartPhone = 0;
-          }
-        });
-      }
-      /////////////////////////////////////////////////////////////
-
-
-      /* //sound// */
-      // sound setting
-      // ion.sound({
-      //   sounds: [{name: "opening"},
-      //     {name: "mouseover"},
-      //     {name: "grabNode"},
-      //     {name: "releaseNode"},
-      //     {name: "legend"}],
-      //
-      //   // main config
-      //   path: "js/sound/",
-      //   preload: true,
-      //   multiplay: true,
-      //   volume: 0.5
-      // });
-      //opening sound
-          //Coloring.sound("opening", 0.5)
     });
+
   }
 }
 </script>
 
 <style lang="scss">
-#chart {
-  //pointer-events: none;
-}
-
 #myGraph {
   position: absolute;
   width: 100%;
@@ -706,299 +988,325 @@ export default {
   //border: 1px solid #ff8e1e;
   /*background-color: #fff5e3;*/
   /*align: center;*/
+  text {
+  	cursor: default;
+  	pointer-events: none;
+  	-webkit-touch-callout: none;
+  	-webkit-user-select: none;
+  	-moz-user-select: none;
+  	-ms-user-select: none;
+  	 user-select: none;
+  }
 }
 
+// #myGraph{
+// 	width: 1200px;
+// 	height: 900px;
+// 	border: 1px solid #ff8e1e;
+// 	/*background-color: #fff5e3;*/
+// 	/*align: center;*/
+// }
+
+
+// h1{
+// 	margin-top: 10px;
+// 	margin-bottom: 10px;
+// 	text-align: center;
+// 	font-size: 3.5em;
+// 	font-weight: 500;
+// 	color: #1a305e;
+//   font-family: "Helvetica Neue","Arial",sans-serif;
+// }
+
 .node_link{
-  fill: #352622;
+  fill: #1a305e;
   font-size: 0.8em;
+	text-align: left;
   font-family: "ヒラギノ角ゴ ProN W3","游ゴシック体",sans-serif;
 }
 
-
 #description{
-  text-align: center;
+	text-align: center;
 }
-
-// p{
-// 	margin-top: 3px;
-// 	margin-bottom: 3px;
-// 	margin-left: auto;
-// 	margin-right: auto;
-// 	width: 1200px;
-// 	text-align: left;
-// 	font-size: 1.0em;
-// 	font-weight: 300;
-// 	line-height: 150%;
-// 	color: #a9a9a9;
-// 	font-family: "Helvetica Neue","Arial","ヒラギノ角ゴ ProN W3","游ゴシック体",sans-serif;
-// }
 
 #name{
-  margin-top: 3px;
-  margin-bottom: 30px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 1200px;
-  text-align: center;
-  font-size: 0.8em;
-  font-weight: 300;
-  line-height: 150%;
-  color: #a9a9a9;
-  font-family: "Helvetica Neue","Arial",sans-serif;
+	margin-top: 3px;
+	margin-bottom: 30px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 1200px;
+	text-align: center;
+	font-size: 0.8em;
+	font-weight: 300;
+	line-height: 150%;
+	color: #a9a9a9;
+	font-family: "Helvetica Neue","Arial",sans-serif;
 }
 
-svg{
-  margin-bottom: 5px;
-}
+// svg {
+// 	margin-bottom: 5px;
+// }
 
 
 /* mouseover */
-.nodeColor{
-  stroke: #d70035;
-  stroke-width: 2;
-  opacity: 0.8;
-  cursor: -webkit-grab;
-  cursor: -moz-grab;
-  cursor: grab;
+.nodeColorSame{
+	fill: #35828b;
+	stroke: #35828b;
+	stroke-width: 2;
+	opacity: 0.8;
+}
+
+.nodeColorSameNonConnection{
+	fill: #66a3b8;
+	stroke: #66a3b8;
+	stroke-width: 2;
+	opacity: 0.8;
+}
+
+.nodeColorDiff{
+	fill: #ec6546;
+	stroke: #35828b;
+	stroke-width: 2;
+	opacity: 0.8;
 }
 
 .linkedNodeText{
-  font-weight: 500;
-  font-size: 0.85em;
-  pointer-events: none;
-
-/* animation */
-  animation: animScaleNodeText 0.15s  linear;
-  transform-origin: 50% 50%;
-  animation-play-state:running;
-
+	font-weight: 500;
+	font-size: 0.85em;
+	pointer-events: none;
+	cursor: default;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	 user-select: none;
 }
-
-  @keyframes animScaleNodeText {
-  0% { font-size: 1.0em; }
-  50% { font-size: 1.1em; }
-  100% { font-size: 1.0em; }
-  }
 
 
 .lineColor{
-  stroke: #d70035;
-  opacity: 1.0;
+	stroke: #35828b;
+	opacity: 1.0;
 }
 
 
 /* mouseout */
 .nodeColorDefault{
-  opacity: 0.6;
-  cursor: -webkit-grab;
-  cursor: -moz-grab;
-  cursor: grab;
+	opacity: 0.6;
 }
 
 .textSizeDefault{
-  pointer-events: none;
+	pointer-events: none;
+	cursor: default;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .lineColorDefault{
-  opacity: 0.5;
+	opacity: 0.5;
 }
 
+/*
+html, css{
+  touch-action:pan-y;
+}
+*/
 
 /* click */
 .nodeColorFade{
-  fill: #E5E5E5;
-  stroke: #bfbec5;
-  opacity: 0.6;
-  cursor: -webkit-grab;
-  cursor: -moz-grab;
-  cursor: grab;
-  transition-duration: 0.5s;
-  pointer-events: none;
+	fill: #ffffff;
+	stroke: #ffffff;
+	opacity: 0.6;
+	transition-duration: 0.5s;
+}
 
+.nodeColorFadeSp{
+	fill: #ffffff;
+	stroke: #ffffff;
+	opacity: 0.6;
+	transition-duration: 0.5s;
 }
 
 .nodeTextFade{
-  opacity: 0.3;
-  pointer-events: none;
-  transition-duration: 0.5s;
+	opacity: 0.15;
+	pointer-events: none;
+	transition-duration: 0.5s;
+	cursor: default;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .lineColorFade{
-  stroke: #E5E5E5;
-  opacity: 0.5;
-  transition-duration: 0.5s;
+	stroke: #ffffff;
+	opacity: 0.5;
+	transition-duration: 0.5s;
 
 }
 
 .nodeReturnFade{
-  opacity: 0.6;
-  cursor: -webkit-grab;
-  cursor: -moz-grab;
-  cursor: grab;
-  transition-duration: 0.5s;
+	opacity: 0.6;
+	transition-duration: 0.5s;
 }
 
 .nodeTextReturnFade{
-  opacity: 1.0;
-  pointer-events: none;
-  transition-duration: 0.5s;
+	opacity: 1.0;
+	pointer-events: none;
+	transition-duration: 0.5s;
+	cursor: default;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .lineReturnFade{
-  opacity: 0.5;
-  transition-duration: 0.5s;
+	opacity: 0.5;
+	transition-duration: 0.5s;
 }
 
 
 /* for text not to drag */
 .nonDrag{
-  pointer-events: none;
+	pointer-events: none;
 }
-
-
-/* legend filter */
-.filteredCircle{
-    stroke-width: 0.5;
-
-    /* bound animation */
-  animation: animScaleCircle 20s  ease-out;
-  transform-origin: 50% 50%;
-  animation-play-state:running;
-
-  }
-  @keyframes animScaleCircle {
-  0% { transform: scale(0.8, 0.8); }
-  1% { transform: scale(2.2, 2.2); }
-  2% { transform: scale(1.6, 1.6); }
-  3% { transform: scale(2.1, 2.1); }
-  4% { transform: scale(1.9, 1.9); }
-  5% { transform: scale(2.0, 2.0); }
-  6% { transform: scale(1.95, 1.95); }
-  7% { transform: scale(2.0, 2.0); }
-  8% { transform: scale(1.97, 1.97); }
-  9% { transform: scale(2.0, 2.0); }
-  10% { transform: scale(1.99, 1.99); }
-  11% { transform: scale(2.0, 2.0); }
-  100% { transform: scale(2.0, 2.0); }
-  }
-
-
-.filteredText{
-  pointer-events: none;
-
-  /* bound animation */
-  animation: animScaleText 20s  ease-out;
-  transform-origin: 50% 50%;
-  animation-play-state:running;
-
-  }
-  @keyframes animScaleText {
-  0% { transform: scale(0.8, 0.8); }
-  1% { transform: scale(1.1, 1.1); }
-  2% { transform: scale(1.0, 1.0); }
-  3% { transform: scale(1.1, 1.1); }
-  4% { transform: scale(1.0, 1.0); }
-  5% { transform: scale(1.1, 1.1); }
-  6% { transform: scale(1.05, 1.05); }
-  7% { transform: scale(1.1, 1.1); }
-  8% { transform: scale(1.07, 1.07); }
-  9% { transform: scale(1.1, 1.1); }
-  10% { transform: scale(1.09, 1.09); }
-  11% { transform: scale(1.1, 1.1); }
-  100% { transform: scale(1.1, 1.1); }
-  }
-
-.returnFilteredCircle{
-  stroke-width: 1;
-
-    /* animation */
-  animation: animScaleCircleReturn 0.3s  ease-out;
-  transform-origin: 50% 50%;
-  animation-play-state:running;
-
-  }
-  @keyframes animScaleCircleReturn {
-  0% { transform: scale(2.0, 2.0); }
-  100% { transform: scale(1.0, 1.0); }
-  }
-
-.returnFilteredText{
-  pointer-events: none;
-
-    /* animation */
-  animation: animScaleTextReturn 0.3s  ease-out;
-  transform-origin: 50% 50%;
-  animation-play-state:running;
-
-  }
-  @keyframes animScaleTextReturn {
-  0% { transform: scale(1.1, 1.1); }
-  100% { transform: scale(1.0, 1.0); }
-  }
 
 
 .smallText{
-  opacity: 0.1;
+	opacity: 0.1;
   pointer-events: none;
+	cursor: default;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .bigText{
-  opacity: 1.0;
+	opacity: 1.0;
   pointer-events: none;
+	cursor: default;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 
 /* grab & grabing */
 
 .svg_grabing{
-  margin-bottom: 50px;
-  cursor: -webkit-grabbing;
+	margin-bottom: 50px;
 }
 
 
 .legend {
-    font-family: "ヒラギノ角ゴ ProN W3","游ゴシック体",sans-serif;
-    opacity: 0.8;
-    font-size: 1.5em;
-    font-weight: 700;
-    padding: 50px 0;
-    text-shadow:
-        0 2px 0 #ffffff,
-        2px 0 0 #ffffff,
-        0 -2px 0 #ffffff,
-        -2px 0 0 #ffffff,
-        -2px -2px 0 #ffffff,
-        2px -2px 0 #ffffff,
-        -2px 2px 0 #ffffff,
-        2px 2px 0 #ffffff
-        ;
+	pointer-events: none;
+	cursor: default;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	font-family: "ヒラギノ角ゴ ProN W3","游ゴシック体",sans-serif;
+	opacity: 0.8;
+	font-size: 1.5em;
+	font-weight: 700;
+	padding: 50px 0;
+	text-shadow:
+		0 2px 0 #ffffff,
+		2px 0 0 #ffffff,
+		0 -2px 0 #ffffff,
+		-2px 0 0 #ffffff,
+		-2px -2px 0 #ffffff,
+		2px -2px 0 #ffffff,
+		-2px 2px 0 #ffffff,
+		2px 2px 0 #ffffff
+;
 
   /* animation */
-  animation: legend 0.3s  ease-out;
-  transform-origin: 50% 50%;
-  animation-play-state:running;
+	animation: legend 0.3s  ease-out;
+	transform-origin: 50% 50%;
+	animation-play-state:running;
 
-  }
-  @keyframes legend {
-  0% { opacity: 0.0; }
-  100% { opacity: 0.8; }
-  }
+	}
+	@keyframes legend {
+	0% { opacity: 0.0; }
+	100% { opacity: 0.8; }
+	}
 
 .legendOff {
-    opacity: 0.0;
-    font-size: 1.5em;
-    font-weight: 700;
-    padding: 50px 0;
-    text-shadow:
-        0 2px 0 #ffffff,
-        2px 0 0 #ffffff,
-        0 -2px 0 #ffffff,
-        -2px 0 0 #ffffff,
-        -2px -2px 0 #ffffff,
-        2px -2px 0 #ffffff,
-        -2px 2px 0 #ffffff,
+	pointer-events: none;
+	cursor: default;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	opacity: 0.0;
+	font-size: 1.5em;
+	font-weight: 700;
+	padding: 50px 0;
+	text-shadow:
+		0 2px 0 #ffffff,
+		2px 0 0 #ffffff,
+		0 -2px 0 #ffffff,
+		-2px 0 0 #ffffff,
+		-2px -2px 0 #ffffff,
+		2px -2px 0 #ffffff,
+		-2px 2px 0 #ffffff,
         2px 2px 0 #ffffff
-        ;
-}
+;}
+
+
+.selectedLegend {
+	pointer-events: none;
+	cursor: default;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	font-family: "ヒラギノ角ゴ ProN W3","游ゴシック体",sans-serif;
+	opacity: 0.8;
+	font-size: 1.5em;
+	font-weight: 700;
+	padding: 50px 0;
+	text-shadow:
+		0 2px 0 #ffffff,
+		2px 0 0 #ffffff,
+		0 -2px 0 #ffffff,
+		-2px 0 0 #ffffff,
+		-2px -2px 0 #ffffff,
+		2px -2px 0 #ffffff,
+		-2px 2px 0 #ffffff,
+		2px 2px 0 #ffffff
+;}
+
+.notSelectedLegend {
+	pointer-events: none;
+	user-select: none;
+	-webkit-touch-callout: none;
+	opacity: 0.4;
+	font-size: 1.5em;
+	font-weight: 700;
+	padding: 50px 0;
+	text-shadow:
+		0 2px 0 #ffffff,
+		2px 0 0 #ffffff,
+		0 -2px 0 #ffffff,
+		-2px 0 0 #ffffff,
+		-2px -2px 0 #ffffff,
+		2px -2px 0 #ffffff,
+		-2px 2px 0 #ffffff,
+		2px 2px 0 #ffffff
+;}
 
 </style>

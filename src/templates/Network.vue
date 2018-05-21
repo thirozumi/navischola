@@ -44,9 +44,10 @@ export default {
 <style lang="scss">
 @import "../assets/styles/main.scss";
 .n-enter-active, .n-leave-active {
-  transition: all .5s;
+  transition: all .2s;
 }
 .n-enter, .n-leave-to {
   opacity: 0;
+  transform: translate(50vw, 0);
 }
 </style>

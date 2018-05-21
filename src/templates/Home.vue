@@ -54,9 +54,10 @@ export default {
 <style lang="scss">
   @import "../assets/styles/main.scss";
   .h-enter-active, .h-leave-active {
-    transition: all .5s;
+    transition: all .4s;
   }
   .h-enter, .h-leave-to {
     opacity: 0;
+    transform: scale(1.1);
   }
 </style>
