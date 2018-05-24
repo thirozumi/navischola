@@ -47,9 +47,6 @@ export default {
         dataSet.edges[e].color  = nColor
       }
 
-      console.log(dataSet.nodes[0])
-
-
         /*
         for(var n=0, l2=dataSet.nodes.length; l2>n; n++ ) {
             console.log(dataSet.nodes[n].attributes)
@@ -179,13 +176,12 @@ export default {
           .call(force.drag);
 
       node.append("circle")
-          .attr("opacity", "0.6")
+          .attr("opacity", "0.5")
           //.attr("r", function(d,i){return Math.sqrt(d.size) * 3 + 3;})
           .attr("r", function(d){return d.size * 1.1 + 1;})
           //.attr("fill", function(d,i){return color(d.group_id)})
           //.attr("fill", function(d){ return d.color})
-          .attr("fill", "#ffffff")
-          .attr("stroke", "#ffffff");
+          .attr("fill", "#ffffff");
 
       node.append("text")
           .attr("dx", "-1.0em")
@@ -194,9 +190,9 @@ export default {
           .attr("font-weight", "300")
           .text(function(d) { return d.id; })
           .attr("class", "nonDrag")
-          .attr("opacity", "0.8")
+          .attr("opacity", "1.0")
           .attr("fill", "#1a305e")
-          .attr({"font-family": ["ヒラギノ角ゴ ProN W3","游ゴシック体","sans-serif"]});
+          .attr({"font-family": ["Helvetica Neue", "Helvetica", "Arial", "YuGothic", "Yu Gothic", "游ゴシック体", "游ゴシック", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "ＭＳ ゴシック", "MS Gothic", "sans-serif"]});
 
       for (let i=0, l=legendPos.length; l>i; i++){
         g.append("text")
@@ -210,7 +206,6 @@ export default {
             .attr("opacity", "0.0")
       }
       let legendForScale = $(".legendOff")
-      console.log(legendForScale)
 
       let pos0x, pos0y;
       let pos1x, pos1y;
@@ -227,90 +222,75 @@ export default {
 
 
       //if (!isSp){
-      if (true){
-        setInterval(function(){
-          /*
-          pos0x = (Number(dataSet.nodes[92].x) + Number(dataSet.nodes[79].x)) / 2;
-          pos0y = (Number(dataSet.nodes[92].y) + Number(dataSet.nodes[79].y)) / 2;
-          pos1x = (Number(dataSet.nodes[102].x) + Number(dataSet.nodes[122].x)) / 2;
-          pos1y = (Number(dataSet.nodes[102].y) + Number(dataSet.nodes[122].y)) / 2;
-          pos2x = (Number(dataSet.nodes[1].x) + 10);
-          pos2y = (Number(dataSet.nodes[1].y) + 30);
-          pos3x = (Number(dataSet.nodes[67].x) + Number(dataSet.nodes[35].x)) / 2;
-          pos3y = (Number(dataSet.nodes[67].y) + Number(dataSet.nodes[35].y)) / 2;
-          pos4x = (Number(dataSet.nodes[13].x) + 10);
-          pos4y = (Number(dataSet.nodes[13].y) + 30);
-          pos5x = (Number(dataSet.nodes[108].x) + 10);
-          pos5y = (Number(dataSet.nodes[108].y) + 30);
-          pos6x = (Number(dataSet.nodes[93].x) + Number(dataSet.nodes[101].x)) / 2;
-          pos6y = (Number(dataSet.nodes[93].y) + Number(dataSet.nodes[101].y)) / 2;
-          pos7x = (Number(dataSet.nodes[61].x) + Number(dataSet.nodes[126].x)) / 2;
-          pos7y = (Number(dataSet.nodes[61].y) + Number(dataSet.nodes[126].y)) / 2;
-          pos8x = (Number(dataSet.nodes[31].x) + 10);
-          pos8y = (Number(dataSet.nodes[31].y) + 30);
-          pos9x = (Number(dataSet.nodes[49].x) + Number(dataSet.nodes[136].x)) / 2;
-          pos9y = (Number(dataSet.nodes[49].y) + Number(dataSet.nodes[136].y)) / 2;
-          pos10x = (Number(dataSet.nodes[6].x) + Number(dataSet.nodes[97].x)) / 2;
-          pos10y = (Number(dataSet.nodes[6].y) + Number(dataSet.nodes[97].y)) / 2;
-          pos11x = (Number(dataSet.nodes[5].x) + Number(dataSet.nodes[72].x)) / 2;
-          pos11y = (Number(dataSet.nodes[5].y) + Number(dataSet.nodes[72].y)) / 2;
-          */
 
-          pos0x = (Number(dataSet.nodes[69].x) + Number(dataSet.nodes[111].x)) / 2;
-          pos0y = (Number(dataSet.nodes[69].y) + Number(dataSet.nodes[111].y)) / 2;
-          pos1x = (Number(dataSet.nodes[1].x) + Number(dataSet.nodes[86].x)) / 2;
-          pos1y = (Number(dataSet.nodes[1].y) + Number(dataSet.nodes[86].y)) / 2;
-          pos2x = (Number(dataSet.nodes[110].x) + Number(dataSet.nodes[82].x)) / 2;
-          pos2y = (Number(dataSet.nodes[110].y) + Number(dataSet.nodes[82].y)) / 2;
-          pos3x = (Number(dataSet.nodes[30].x) + Number(dataSet.nodes[99].x)) / 2;
-          pos3y = (Number(dataSet.nodes[30].y) + Number(dataSet.nodes[99].y)) / 2;
-          pos4x = (Number(dataSet.nodes[27].x) + Number(dataSet.nodes[87].x)) / 2;
-          pos4y = (Number(dataSet.nodes[27].y) + Number(dataSet.nodes[87].y)) / 2;
-          pos5x = (Number(dataSet.nodes[126].x) + Number(dataSet.nodes[20].x)) / 2;
-          pos5y = (Number(dataSet.nodes[126].y) + Number(dataSet.nodes[20].y)) / 2;
-          pos6x = (Number(dataSet.nodes[135].x) + Number(dataSet.nodes[63].x)) / 2;
-          pos6y = (Number(dataSet.nodes[135].y) + Number(dataSet.nodes[63].y)) / 2;
-          pos7x = (Number(dataSet.nodes[2].x));
-          pos7y = (Number(dataSet.nodes[2].y) + 10);
-          pos8x = (Number(dataSet.nodes[68].x) + Number(dataSet.nodes[104].x)) / 2;
-          pos8y = (Number(dataSet.nodes[68].y) + Number(dataSet.nodes[104].y)) / 2;
-          pos9x = (Number(dataSet.nodes[32].x) + Number(dataSet.nodes[102].x)) / 2;
-          pos9y = (Number(dataSet.nodes[32].y) + Number(dataSet.nodes[102].y)) / 2;
-          pos10x = (Number(dataSet.nodes[98].x) + Number(dataSet.nodes[66].x)) / 2;
-          pos10y = (Number(dataSet.nodes[98].y) + Number(dataSet.nodes[66].y)) / 2;
-          pos11x = (Number(dataSet.nodes[42].x) + Number(dataSet.nodes[83].x)) / 2;
-          pos11y = (Number(dataSet.nodes[42].y) + Number(dataSet.nodes[83].y)) / 2;
+      let cnt = 0;
+      let run = 1;
+      window.addEventListener('keydown', (eve) => {
+        run = eve.key !== 'Escape';
+      }, false);
+
+      setInterval(function(){
+        pos0x = (Number(dataSet.nodes[69].x) + Number(dataSet.nodes[111].x)) / 2;
+        pos0y = (Number(dataSet.nodes[69].y) + Number(dataSet.nodes[111].y)) / 2;
+        pos1x = (Number(dataSet.nodes[1].x) + Number(dataSet.nodes[86].x)) / 2;
+        pos1y = (Number(dataSet.nodes[1].y) + Number(dataSet.nodes[86].y)) / 2;
+        pos2x = (Number(dataSet.nodes[110].x) + Number(dataSet.nodes[82].x)) / 2;
+        pos2y = (Number(dataSet.nodes[110].y) + Number(dataSet.nodes[82].y)) / 2;
+        pos3x = (Number(dataSet.nodes[30].x) + Number(dataSet.nodes[99].x)) / 2;
+        pos3y = (Number(dataSet.nodes[30].y) + Number(dataSet.nodes[99].y)) / 2;
+        pos4x = (Number(dataSet.nodes[27].x) + Number(dataSet.nodes[87].x)) / 2;
+        pos4y = (Number(dataSet.nodes[27].y) + Number(dataSet.nodes[87].y)) / 2;
+        pos5x = (Number(dataSet.nodes[126].x) + Number(dataSet.nodes[20].x)) / 2;
+        pos5y = (Number(dataSet.nodes[126].y) + Number(dataSet.nodes[20].y)) / 2;
+        pos6x = (Number(dataSet.nodes[135].x) + Number(dataSet.nodes[63].x)) / 2;
+        pos6y = (Number(dataSet.nodes[135].y) + Number(dataSet.nodes[63].y)) / 2;
+        pos7x = (Number(dataSet.nodes[2].x));
+        pos7y = (Number(dataSet.nodes[2].y) + 10);
+        pos8x = (Number(dataSet.nodes[68].x) + Number(dataSet.nodes[104].x)) / 2;
+        pos8y = (Number(dataSet.nodes[68].y) + Number(dataSet.nodes[104].y)) / 2;
+        pos9x = (Number(dataSet.nodes[32].x) + Number(dataSet.nodes[102].x)) / 2;
+        pos9y = (Number(dataSet.nodes[32].y) + Number(dataSet.nodes[102].y)) / 2;
+        pos10x = (Number(dataSet.nodes[98].x) + Number(dataSet.nodes[66].x)) / 2;
+        pos10y = (Number(dataSet.nodes[98].y) + Number(dataSet.nodes[66].y)) / 2;
+        pos11x = (Number(dataSet.nodes[42].x) + Number(dataSet.nodes[83].x)) / 2;
+        pos11y = (Number(dataSet.nodes[42].y) + Number(dataSet.nodes[83].y)) / 2;
 
 
-          $("#legend0").attr("x", function(){ return pos0x})
-              .attr("y", function(){ return pos0y});
-          $("#legend1").attr("x", function(){ return pos1x})
-              .attr("y", function(){ return pos1y});
-          $("#legend2").attr("x", function(){ return pos2x})
-              .attr("y", function(){ return pos2y});
-          $("#legend3").attr("x", function(){ return pos3x})
-              .attr("y", function(){ return pos3y});
-          $("#legend4").attr("x", function(){ return pos4x})
-              .attr("y", function(){ return pos4y});
-          $("#legend5").attr("x", function(){ return pos5x})
-              .attr("y", function(){ return pos5y});
-          $("#legend6").attr("x", function(){ return pos6x})
-              .attr("y", function(){ return pos6y});
-          $("#legend7").attr("x", function(){ return pos7x})
-              .attr("y", function(){ return pos7y});
-          $("#legend8").attr("x", function(){ return pos8x})
-              .attr("y", function(){ return pos8y});
-          $("#legend9").attr("x", function(){ return pos9x})
-              .attr("y", function(){ return pos9y});
-          $("#legend10").attr("x", function(){ return pos10x})
-              .attr("y", function(){ return pos10y});
-          $("#legend11").attr("x", function(){ return pos11x})
-              .attr("y", function(){ return pos11y});
-        }, 100);
-      }
+        if (cnt%5===0 && run){
+          console.log("X", pos0x, Number(dataSet.nodes[69].x), Number(dataSet.nodes[111].x))
+          console.log("Y", pos0y, Number(dataSet.nodes[69].y), Number(dataSet.nodes[111].y))
+        }
+        cnt = cnt+1;
+
+        $("#legend0").attr("x", function(){ return pos0x})
+            .attr("y", function(){ return pos0y});
+        $("#legend1").attr("x", function(){ return pos1x})
+            .attr("y", function(){ return pos1y});
+        $("#legend2").attr("x", function(){ return pos2x})
+            .attr("y", function(){ return pos2y});
+        $("#legend3").attr("x", function(){ return pos3x})
+            .attr("y", function(){ return pos3y});
+        $("#legend4").attr("x", function(){ return pos4x})
+            .attr("y", function(){ return pos4y});
+        $("#legend5").attr("x", function(){ return pos5x})
+            .attr("y", function(){ return pos5y});
+        $("#legend6").attr("x", function(){ return pos6x})
+            .attr("y", function(){ return pos6y});
+        $("#legend7").attr("x", function(){ return pos7x})
+            .attr("y", function(){ return pos7y});
+        $("#legend8").attr("x", function(){ return pos8x})
+            .attr("y", function(){ return pos8y});
+        $("#legend9").attr("x", function(){ return pos9x})
+            .attr("y", function(){ return pos9y});
+        $("#legend10").attr("x", function(){ return pos10x})
+            .attr("y", function(){ return pos10y});
+        $("#legend11").attr("x", function(){ return pos11x})
+            .attr("y", function(){ return pos11y});
+      }, 100);
 
 
       /* //Initial display1// */
+      console.log(location.search.split('='), location.search.split('=')[1])
       let initModu  = Number(location.search.split('=')[1]);
       let initNum  = InitNodeId[initModu];
       let initPos;
@@ -343,7 +323,6 @@ export default {
       g.attr("transform","translate(" +  tx + "," + ty +")" + tscale); //中で計算するとエラーになる
 
       const initLegend = "#legend" + initModu;
-      console.log(initLegend)
 
       //add zoom capabilities (for non-Sp)
       let zoom = d3.behavior.zoom()
@@ -497,12 +476,6 @@ export default {
         lastTouch = now;
       }, true);
 
-
-
-
-      let aaa = $('g').css('transform');
-      console.log(aaa)
-      console.log(aaa === "none")
 
 
       /* get scale value */
@@ -782,18 +755,13 @@ export default {
               let selectNodeSource = d3.selectAll("circle")[0][nodeSource]; //node which match source index number
               let selectNodeTarget = d3.selectAll("circle")[0][nodeTarget]; //node which match target index number
 
-              console.log(dataSet.edges[lineIndex])
               if (dataSet.edges[lineIndex].source['attributes.Modularity Class'] ===
                   dataSet.edges[lineIndex].target['attributes.Modularity Class']){
                 $(selectNodeSource).attr("class", "nodeColorSame")//node color
                 $(selectNodeTarget).attr("class", "nodeColorSame")//node color
-                console.log(selectNodeSource)
-                console.log(selectNodeTarget)
-                console.log("cssNodeSame")
               }else{
                 $(selectNodeSource).attr("class", "nodeColorDiff")//node color
                 $(selectNodeTarget).attr("class", "nodeColorDiff")//node color
-                console.log("cssNodeDiff")
               }
               $(d3.selectAll("circle")[0][nodeIndex]).attr("class", "nodeColorSame")//node color
 
@@ -831,7 +799,7 @@ export default {
           Coloring.legend(d);
           nodeOn = 1;
 
-          console.log(d.index,  d.id, event.pageX , event.pageY)
+          console.log(d['attributes.Modularity Class'], d.index,  d.id, event.pageX , event.pageY)
         });
 
         // mouse out >>> to default color
@@ -936,7 +904,6 @@ export default {
       /* //Initial display2// */
       let promise = new Promise((resolve, reject) => { // #1
         resolve(Coloring.fade("colorFade"))
-        console.log('#1 Coloring.fade')
         reject('error')
       })
       promise.then(() => { // #2
@@ -945,7 +912,6 @@ export default {
           //resolve(Coloring.initColoring(initNum))
           resolve(Coloring.initColor_(initNum))
           reject('error')
-          console.log('#2 Coloring.initColor')
         })
       }).then(() => { // #3
         return new Promise((resolve, reject) => {
@@ -954,7 +920,6 @@ export default {
             $("circle").parent().children('text').attr("class", "smallText")
             //legendForScale.attr("class", "legend")
             reject('error')
-            console.log('#3 Coloring.fade')
           }, displayNodeDuration)
         })
       }).then(() => { // #3
@@ -962,7 +927,6 @@ export default {
           setTimeout(() => {
             resolve(legendForScale.attr("class", "legend"))
             reject('error')
-            console.log('#4 Coloring legend')
           }, displayLegendDuration)
         })
       }).catch(() => {
@@ -971,7 +935,6 @@ export default {
       })
 
     });
-
   }
 }
 </script>
@@ -981,48 +944,29 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  //height: 40rem;
   background: #D2D7DC;
-  //width: 1200px;
-  //height: 900px;
-  //border: 1px solid #ff8e1e;
-  /*background-color: #fff5e3;*/
-  /*align: center;*/
-  text {
-  	cursor: default;
-  	pointer-events: none;
-  	-webkit-touch-callout: none;
-  	-webkit-user-select: none;
-  	-moz-user-select: none;
-  	-ms-user-select: none;
-  	 user-select: none;
-  }
+  z-index: 1;
 }
 
-// #myGraph{
-// 	width: 1200px;
-// 	height: 900px;
-// 	border: 1px solid #ff8e1e;
-// 	/*background-color: #fff5e3;*/
-// 	/*align: center;*/
+// body{
+// 	background-color: #d2d7dc;
 // }
 
-
-// h1{
-// 	margin-top: 10px;
-// 	margin-bottom: 10px;
-// 	text-align: center;
-// 	font-size: 3.5em;
-// 	font-weight: 500;
-// 	color: #1a305e;
-//   font-family: "Helvetica Neue","Arial",sans-serif;
-// }
+#myScope text {
+	cursor: default;
+	pointer-events: none;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	 user-select: none;
+}
 
 .node_link{
   fill: #1a305e;
   font-size: 0.8em;
 	text-align: left;
-  font-family: "ヒラギノ角ゴ ProN W3","游ゴシック体",sans-serif;
+  // font-family: "Helvetica Neue", "Helvetica", "Arial", "YuGothic", "Yu Gothic", "游ゴシック体", "游ゴシック", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "ＭＳ ゴシック", "MS Gothic", sans-serif;
 }
 
 #description{
@@ -1043,31 +987,24 @@ export default {
 	font-family: "Helvetica Neue","Arial",sans-serif;
 }
 
-// svg {
-// 	margin-bottom: 5px;
-// }
-
+svg{
+	//margin-bottom: 5px;
+}
 
 /* mouseover */
 .nodeColorSame{
 	fill: #35828b;
-	stroke: #35828b;
-	stroke-width: 2;
-	opacity: 0.8;
+	opacity: 1.0;
 }
 
 .nodeColorSameNonConnection{
 	fill: #66a3b8;
-	stroke: #66a3b8;
-	stroke-width: 2;
-	opacity: 0.8;
+	opacity: 1.0;
 }
 
 .nodeColorDiff{
 	fill: #ec6546;
-	stroke: #35828b;
-	stroke-width: 2;
-	opacity: 0.8;
+	opacity: 1.0;
 }
 
 .linkedNodeText{
@@ -1091,7 +1028,7 @@ export default {
 
 /* mouseout */
 .nodeColorDefault{
-	opacity: 0.6;
+	opacity: 0.5;
 }
 
 .textSizeDefault{
@@ -1117,15 +1054,13 @@ html, css{
 /* click */
 .nodeColorFade{
 	fill: #ffffff;
-	stroke: #ffffff;
-	opacity: 0.6;
+	opacity: 0.5;
 	transition-duration: 0.5s;
 }
 
 .nodeColorFadeSp{
 	fill: #ffffff;
-	stroke: #ffffff;
-	opacity: 0.6;
+	opacity: 0.5;
 	transition-duration: 0.5s;
 }
 
@@ -1149,7 +1084,7 @@ html, css{
 }
 
 .nodeReturnFade{
-	opacity: 0.6;
+	opacity: 0.5;
 	transition-duration: 0.5s;
 }
 
@@ -1215,7 +1150,7 @@ html, css{
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
-	font-family: "ヒラギノ角ゴ ProN W3","游ゴシック体",sans-serif;
+	font-family: "Helvetica Neue", "Helvetica", "Arial", "YuGothic", "Yu Gothic", "游ゴシック体", "游ゴシック", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "ＭＳ ゴシック", "MS Gothic", sans-serif;
 	opacity: 0.8;
 	font-size: 1.5em;
 	font-weight: 700;
@@ -1229,18 +1164,7 @@ html, css{
 		2px -2px 0 #ffffff,
 		-2px 2px 0 #ffffff,
 		2px 2px 0 #ffffff
-;
-
-  /* animation */
-	animation: legend 0.3s  ease-out;
-	transform-origin: 50% 50%;
-	animation-play-state:running;
-
-	}
-	@keyframes legend {
-	0% { opacity: 0.0; }
-	100% { opacity: 0.8; }
-	}
+;}
 
 .legendOff {
 	pointer-events: none;
@@ -1274,7 +1198,7 @@ html, css{
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
-	font-family: "ヒラギノ角ゴ ProN W3","游ゴシック体",sans-serif;
+	font-family: "Helvetica Neue", "Helvetica", "Arial", "YuGothic", "Yu Gothic", "游ゴシック体", "游ゴシック", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "ＭＳ ゴシック", "MS Gothic", sans-serif;
 	opacity: 0.8;
 	font-size: 1.5em;
 	font-weight: 700;
@@ -1308,5 +1232,4 @@ html, css{
 		-2px 2px 0 #ffffff,
 		2px 2px 0 #ffffff
 ;}
-
 </style>

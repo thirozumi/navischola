@@ -8,12 +8,12 @@
           .lead(v-html='lead')
           p.footage
             small {{ note }}
+      Slider
       section.section-question
         .section-content
           router-link.nav-left.button-primary.button-lg(v-bind:to="{ name : 'Question', params : { id: 1 }}", tag='button')
             i.icon-oval.icon-chevron-left
             span {{ start }}
-            i.icon-oval.icon-chevron-right
       section.section-description
         .section-content
           div(v-html='lead')
@@ -31,11 +31,12 @@
 <script>
 import ScholaScope from '../components/ScholaScope.vue'
 import Footer from '../components/Footer.vue'
+import Slider from '../components/Slider.vue'
 
 export default {
   name: 'Home',
   components: {
-    Footer, ScholaScope
+    Footer, ScholaScope, Slider
   },
   data() {
     return {
