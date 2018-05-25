@@ -1,13 +1,14 @@
 <template lang="pug">
   transition(name='modal-fade')
     .modal-backdrop
-      .modal(role='dialog', aria-labelledby='modalTitle', aria-describedby='modalDescription')
-        header#modalTitle.modal-header
-          slot(name='header')
-            img.brand(src='/assets/images/logo-navischola.svg', :alt='title_primary')
-            a.button-close(href='#', @click='close', aria-label='Close modal', onclick="return false")
-              i.icon-oval-inverted-lg.icon-cross
+      .modal.modal-about(role='dialog', aria-labelledby='modalTitle', aria-describedby='modalDescription')
+        a.button-close(href='#', @click='close', aria-label='Close modal', onclick="return false")
+          i.icon-oval-inverted-lg.icon-cross
         .modal-content
+          header#modalTitle.modal-header
+            slot(name='header')
+              h3
+                img.brand(src='/assets/images/logo-navischola.svg', :alt='title_primary')
           section#modalDescription.modal-body
             slot(name='body')
               | {{ lead }}
@@ -20,16 +21,16 @@
           aside.modal-aside
             slot(name='aside')
               dl
-                dt 【開発・運営】
+                dt ＜開発・運営＞
                 dd(v-html='author')
                 dd(v-html='inquiry')
-                dt 【制作】
+                dt ＜制作＞
                 dd(v-html='credit')
 </template>
 
 <script>
   export default {
-    name: 'Modal',
+    name: 'About',
     methods: {
       close() {
         this.$emit('close');

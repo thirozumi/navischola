@@ -32,7 +32,7 @@
         router-link.nav-left.button-primary.button-lg(v-bind:to="{ name : 'Question'}", tag='button')
           i.icon-oval.icon-chevron-left
           span {{ again }}
-        router-link.nav-right.button-primary.button-lg(v-bind:to="{ path: '/network', query: { id: $route.query.id }}", tag='button')
+        router-link.nav-right.button-primary.button-lg(v-bind:to="{ path: '/network', query: { id: $route.query.id, s: $route.query.s }}", tag='button')
           span {{ network }}
           i.icon-oval.icon-chevron-right
       Footer
@@ -48,11 +48,6 @@ export default {
   name: 'Result',
   components: {
     Header, Footer, Share
-  },
-  mounted() {
-    // let f = document.getElementsByTagName('footer');
-    // f[0].style.paddingBottom = '12rem';
-    // console.log('adjusted footer');
   },
   data() {
     return {

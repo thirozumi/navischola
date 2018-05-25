@@ -13,10 +13,10 @@
           ul.list-horizontal(v-for="question in questions", v-if="count == question.id")
             li
               button.button-primary(v-show="count < (count_max - 1)", v-on:click="getNext(0)") YES
-              router-link.button-primary(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ path: '/result', query: { id: getId()}}") YES
+              router-link.button-primary(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ path: '/result', query: { id: getId(), s: getSubject()}}") YES
             li
               button.button-primary(v-show="count < (count_max - 1)", v-on:click="getNext(1)") NO
-              router-link.button-primary(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ path: '/result', query: { id: getId()}}") NO
+              router-link.button-primary(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ path: '/result', query: { id: getId(), s: getSubject()}}") NO
           p.question-count(v-show="count !== count_max") {{ current }} / {{ count_max }}
       Footer
 </template>
@@ -126,99 +126,195 @@ export default {
     },
     getId: function() {
       if(this.d[0] <= 0.5)
-        if(this.d[4] <= 0.5)
-          if(this.d[6] <= 0.5)
-            if(this.d[10] <= 0.5)
-              if(this.d[12] <= 0.5)
-                return "11" // 医歯薬学
-              else // if d[12] > 0.5
-                return "11" // 医歯薬学
-            else // if d[10] > 0.5
-              return "2" // 複合領域
-          else // if d[6] > 0.5
-            if(this.d[14] <= 0.5)
-              if(this.d[10] <= 0.5)
-                if(this.d[12] <= 0.5)
-                  return "4" // 社会科学
-                else // if d[12] > 0.5
-                  return "3" // 人文学
-              else // if d[10] > 0.5
-                return "4" // 社会科学
-            else // if d[14] > 0.5
-              if(this.d[8] <= 0.5)
-                if(this.d[13] <= 0.5)
-                  if(this.d[11] <= 0.5)
-                    return "7" // 化学
-                  else // if d[11] > 0.5
-                    return "3" // 人文学
-                else // if d[13] > 0.5
-                  return "0"  // 情報学
-              else // if d[8] > 0.5
-                return "4" // 社会科学
-        else // if d[4] > 0.5
-          if(this.d[2] <= 0.5)
-            if(this.d[11] <= 0.5)
-              if(this.d[13] <= 0.5)
-                if(this.d[5] <= 0.5)
-                  if(this.d[6] <= 0.5)
-                    return "11" // 医歯薬学
-                  else // if d[6] > 0.5
-                    if(this.d[9] <= 0.5)
-                      return "9" // 生物学
-                    else // if d[9] > 0.5
-                      return "7" // 化学
-                else // if d[5] > 0.5
-                  return "8" // 工学
-              else // if d[13] > 0.5
-                return "4" // 社会科学
-            else // if d[11] > 0.5
-              if(this.d[12] <= 0.5)
-                return "10" // 農学
-              else // if d[12] > 0.5
-                if(this.d[5] <= 0.5)
-                  return "8" // 工学
-                else // if d[5] > 0.5
-                  return "5" // 総合理工
-          else // if d[2] > 0.5
-            if(this.d[3] <= 0.5)
-              if(this.d[1] <= 0.5)
-                return "10" // 農学
-              else // if d[1] > 0.5
-                return "6" // 数物系科学
-            else // if d[3] > 0.5
-              return "1" // 環境学
+      if(this.d[4] <= 0.5)
+      if(this.d[6] <= 0.5)
+      if(this.d[10] <= 0.5)
+      if(this.d[12] <= 0.5)
+      return "11" // 工学
+      else // if d[12] > 0.5
+      return "11" // 工学
+      else // if d[10] > 0.5
+      return "2" // 人文学
+      else // if d[6] > 0.5
+      if(this.d[14] <= 0.5)
+      if(this.d[10] <= 0.5)
+      if(this.d[12] <= 0.5)
+      return "4" // 社会科学
+      else // if d[12] > 0.5
+      return "3" // 生物学
+      else // if d[10] > 0.5
+      return "4" // 社会科学
+      else // if d[14] > 0.5
+      if(this.d[8] <= 0.5)
+      if(this.d[13] <= 0.5)
+      if(this.d[11] <= 0.5)
+      return "7" // 環境学
+      else // if d[11] > 0.5
+      return "3" // 生物学
+      else // if d[13] > 0.5
+      return "0"  // 医歯薬学
+      else // if d[8] > 0.5
+      return "4" // 社会科学
+      else // if d[4] > 0.5
+      if(this.d[2] <= 0.5)
+      if(this.d[11] <= 0.5)
+      if(this.d[13] <= 0.5)
+      if(this.d[5] <= 0.5)
+      if(this.d[6] <= 0.5)
+      return "11" // 工学
+      else // if d[6] > 0.5
+      if(this.d[9] <= 0.5)
+      return "9" // 複合領域
+      else // if d[9] > 0.5
+      return "7" // 環境学
+      else // if d[5] > 0.5
+      return "8" // 化学
+      else // if d[13] > 0.5
+      return "4" // 社会科学
+      else // if d[11] > 0.5
+      if(this.d[12] <= 0.5)
+      return "10" // 農学
+      else // if d[12] > 0.5
+      if(this.d[5] <= 0.5)
+      return "8" // 化学
+      else // if d[5] > 0.5
+      return "5" // 数物系科学
+      else // if d[2] > 0.5
+      if(this.d[3] <= 0.5)
+      if(this.d[1] <= 0.5)
+      return "10" // 農学
+      else // if d[1] > 0.5
+      return "6" // 総合理工
+      else // if d[3] > 0.5
+      return "1" // 情報学
       else // if d[0] > 0.5
-        if(this.d[4] <= 0.5)
-          if(this.d[1] <= 0.5)
-            if(this.d[6] <= 0.5)
-              if(this.d[12] <= 0.5)
-                return "7" // 化学
-              else // if d[12] > 0.5
-                return "8" // 工学
-            else // if d[6] > 0.5
-              return "9" // 生物学
-          else // if d[1] > 0.5
-            if(this.d[6] <= 0.5)
-              return "6" // 数物系科学
-            else // if d[6] > 0.5
-              if(this.d[10] <= 0.5)
-                return "9" // 生物学
-              else // if d[10] > 0.5
-                return "3" // 人文学
-        else // if d[4] > 0.5
-          if(this.d[5] <= 0.5)
-            return "9" // 生物学
-          else // if d[5] > 0.5
-            if(this.d[10] <= 0.5)
-              return "9" // 生物学
-            else // if d[10] > 0.5
-              if(this.d[6] <= 0.5)
-                if(this.d[2] <= 0.5)
-                  return "6" // 数物系科学
-                else // if d[2] > 0.5
-                  return "6" // 数物系科学
-              else // if d[6] > 0.5
-                return "6" // 数物系科学
+      if(this.d[4] <= 0.5)
+      if(this.d[1] <= 0.5)
+      if(this.d[6] <= 0.5)
+      if(this.d[12] <= 0.5)
+      return "7" // 環境学
+      else // if d[12] > 0.5
+      return "8" // 化学
+      else // if d[6] > 0.5
+      return "9" // 複合領域
+      else // if d[1] > 0.5
+      if(this.d[6] <= 0.5)
+      return "6" // 総合理工
+      else // if d[6] > 0.5
+      if(this.d[10] <= 0.5)
+      return "9" // 複合領域
+      else // if d[10] > 0.5
+      return "3" // 生物学
+      else // if d[4] > 0.5
+      if(this.d[5] <= 0.5)
+      return "9" // 複合領域
+      else // if d[5] > 0.5
+      if(this.d[10] <= 0.5)
+      return "9" // 複合領域
+      else // if d[10] > 0.5
+      if(this.d[6] <= 0.5)
+      if(this.d[2] <= 0.5)
+      return "6" // 総合理工
+      else // if d[2] > 0.5
+      return "6" // 総合理工
+      else // if d[6] > 0.5
+      return "6" // 総合理工
+    },
+    getSubject: function() {
+      if(this.d[0] <= 0.5)
+      if(this.d[4] <= 0.5)
+      if(this.d[6] <= 0.5)
+      if(this.d[10] <= 0.5)
+      if(this.d[12] <= 0.5)
+      return "engineering" // 工学
+      else // if d[12] > 0.5
+      return "engineering" // 工学
+      else // if d[10] > 0.5
+      return "humanitiess" // 人文学
+      else // if d[6] > 0.5
+      if(this.d[14] <= 0.5)
+      if(this.d[10] <= 0.5)
+      if(this.d[12] <= 0.5)
+      return "social-science" // 社会科学
+      else // if d[12] > 0.5
+      return "biology" // 生物学
+      else // if d[10] > 0.5
+      return "social-science" // 社会科学
+      else // if d[14] > 0.5
+      if(this.d[8] <= 0.5)
+      if(this.d[13] <= 0.5)
+      if(this.d[11] <= 0.5)
+      return "environmental-studies" // 環境学
+      else // if d[11] > 0.5
+      return "biology" // 生物学
+      else // if d[13] > 0.5
+      return "biomedical-sciences"  // 医歯薬学
+      else // if d[8] > 0.5
+      return "social-science" // 社会科学
+      else // if d[4] > 0.5
+      if(this.d[2] <= 0.5)
+      if(this.d[11] <= 0.5)
+      if(this.d[13] <= 0.5)
+      if(this.d[5] <= 0.5)
+      if(this.d[6] <= 0.5)
+      return "engineering" // 工学
+      else // if d[6] > 0.5
+      if(this.d[9] <= 0.5)
+      return "combined-fields" // 複合領域
+      else // if d[9] > 0.5
+      return "environmental-studies" // 環境学
+      else // if d[5] > 0.5
+      return "chemistry" // 化学
+      else // if d[13] > 0.5
+      return "social-science" // 社会科学
+      else // if d[11] > 0.5
+      if(this.d[12] <= 0.5)
+      return "agriculture" // 農学
+      else // if d[12] > 0.5
+      if(this.d[5] <= 0.5)
+      return "chemistry" // 化学
+      else // if d[5] > 0.5
+      return "mathematical-and-physical-sciences" // 数物系科学
+      else // if d[2] > 0.5
+      if(this.d[3] <= 0.5)
+      if(this.d[1] <= 0.5)
+      return "agriculture" // 農学
+      else // if d[1] > 0.5
+      return "general-science-and-engineering" // 総合理工
+      else // if d[3] > 0.5
+      return "informatics" // 情報学
+      else // if d[0] > 0.5
+      if(this.d[4] <= 0.5)
+      if(this.d[1] <= 0.5)
+      if(this.d[6] <= 0.5)
+      if(this.d[12] <= 0.5)
+      return "environmental-studies" // 環境学
+      else // if d[12] > 0.5
+      return "chemistry" // 化学
+      else // if d[6] > 0.5
+      return "combined-fields" // 複合領域
+      else // if d[1] > 0.5
+      if(this.d[6] <= 0.5)
+      return "general-science-and-engineering" // 総合理工
+      else // if d[6] > 0.5
+      if(this.d[10] <= 0.5)
+      return "combined-fields" // 複合領域
+      else // if d[10] > 0.5
+      return "biology" // 生物学
+      else // if d[4] > 0.5
+      if(this.d[5] <= 0.5)
+      return "combined-fields" // 複合領域
+      else // if d[5] > 0.5
+      if(this.d[10] <= 0.5)
+      return "combined-fields" // 複合領域
+      else // if d[10] > 0.5
+      if(this.d[6] <= 0.5)
+      if(this.d[2] <= 0.5)
+      return "general-science-and-engineering" // 総合理工
+      else // if d[2] > 0.5
+      return "general-science-and-engineering" // 総合理工
+      else // if d[6] > 0.5
+      return "general-science-and-engineering" // 総合理工
     }
   }
 }
@@ -227,10 +323,10 @@ export default {
 <style lang="scss">
 @import "../assets/styles/main.scss";
 .q-enter-active, .q-leave-active {
-  transition: all .4s;
+  transition: all .5s;
 }
 .q-enter, .q-leave-to {
   opacity: 0;
-  transform: translate(-50vw, 0);
+  transform: translate(-10vw, 0);
 }
 </style>

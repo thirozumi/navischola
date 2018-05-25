@@ -57,7 +57,7 @@ export default {
 <style style="scss">
 .fade-enter-active, .fade-leave-active {
   position: absolute;
-  transition: all .2s linear;
+  transition: all .4s linear;
   overflow: hidden;
   opacity: 1;
   visibility: visible;

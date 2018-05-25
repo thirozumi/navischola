@@ -110,8 +110,11 @@ export default {
 
 
       /* //Setting// */
-      const width = 1200;
-      const height = 900;
+      //const width = 1200;
+      //const height = 900;
+
+      const width = $('#myGraph').width();
+      const height = $('#myGraph').height();
 
       const force = d3.layout.force()
           .nodes(dataSet.nodes)
@@ -223,74 +226,101 @@ export default {
 
       //if (!isSp){
 
+      /*
       let cnt = 0;
-      let run = 1;
+      let run = 0;
+
+
+      window.addEventListener('keydown', (eve) => {
+        if (eve.key === 'Escape'){
+          run = 0
+        }else {
+          run = 1
+        }  }, false);
+      */
+
+      //let cnt = 0;
+      let simulateTextPosision = function() {
+        if (force.alpha() > 0.01){
+          pos0x = (dataSet.nodes[69].x + dataSet.nodes[111].x) / 2;
+          pos0y = (dataSet.nodes[69].y + dataSet.nodes[111].y) / 2;
+          pos1x = (dataSet.nodes[1].x + dataSet.nodes[86].x) / 2;
+          pos1y = (dataSet.nodes[1].y + dataSet.nodes[86].y) / 2;
+          pos2x = (dataSet.nodes[110].x + dataSet.nodes[82].x) / 2;
+          pos2y = (dataSet.nodes[110].y + dataSet.nodes[82].y) / 2;
+          pos3x = (dataSet.nodes[30].x + dataSet.nodes[99].x) / 2;
+          pos3y = (dataSet.nodes[30].y + dataSet.nodes[99].y) / 2;
+          pos4x = (dataSet.nodes[27].x + dataSet.nodes[87].x) / 2;
+          pos4y = (dataSet.nodes[27].y + dataSet.nodes[87].y) / 2;
+          pos5x = (dataSet.nodes[126].x + dataSet.nodes[20].x) / 2;
+          pos5y = (dataSet.nodes[126].y + dataSet.nodes[20].y) / 2;
+          pos6x = (dataSet.nodes[135].x + dataSet.nodes[63].x) / 2;
+          pos6y = (dataSet.nodes[135].y + dataSet.nodes[63].y) / 2;
+          pos7x = (dataSet.nodes[2].x);
+          pos7y = (dataSet.nodes[2].y + 10);
+          pos8x = (dataSet.nodes[68].x + dataSet.nodes[104].x) / 2;
+          pos8y = (dataSet.nodes[68].y + dataSet.nodes[104].y) / 2;
+          pos9x = (dataSet.nodes[32].x + dataSet.nodes[102].x) / 2;
+          pos9y = (dataSet.nodes[32].y + dataSet.nodes[102].y) / 2;
+          pos10x = (dataSet.nodes[98].x + dataSet.nodes[66].x) / 2;
+          pos10y = (dataSet.nodes[98].y + dataSet.nodes[66].y) / 2;
+          pos11x = (dataSet.nodes[42].x + dataSet.nodes[83].x) / 2;
+          pos11y = (dataSet.nodes[42].y + dataSet.nodes[83].y) / 2;
+
+
+          /*
+          if (cnt%10===0 && run){
+            console.log("X", pos0x, Number(dataSet.nodes[69].x), Number(dataSet.nodes[111].x))
+            console.log("Y", pos0y, Number(dataSet.nodes[69].y), Number(dataSet.nodes[111].y))
+            //console.log(cnt)
+          }
+          */
+
+
+          $("#legend0").attr("x", function(){ return pos0x})
+              .attr("y", function(){ return pos0y});
+          $("#legend1").attr("x", function(){ return pos1x})
+              .attr("y", function(){ return pos1y});
+          $("#legend2").attr("x", function(){ return pos2x})
+              .attr("y", function(){ return pos2y});
+          $("#legend3").attr("x", function(){ return pos3x})
+              .attr("y", function(){ return pos3y});
+          $("#legend4").attr("x", function(){ return pos4x})
+              .attr("y", function(){ return pos4y});
+          $("#legend5").attr("x", function(){ return pos5x})
+              .attr("y", function(){ return pos5y});
+          $("#legend6").attr("x", function(){ return pos6x})
+              .attr("y", function(){ return pos6y});
+          $("#legend7").attr("x", function(){ return pos7x})
+              .attr("y", function(){ return pos7y});
+          $("#legend8").attr("x", function(){ return pos8x})
+              .attr("y", function(){ return pos8y});
+          $("#legend9").attr("x", function(){ return pos9x})
+              .attr("y", function(){ return pos9y});
+          $("#legend10").attr("x", function(){ return pos10x})
+              .attr("y", function(){ return pos10y});
+          $("#legend11").attr("x", function(){ return pos11x})
+              .attr("y", function(){ return pos11y});
+
+          //console.log('simulateTextPosision', force.alpha())
+        }
+        //cnt = cnt+1;
+      }
+
+      //let cnt = 0;
+      //let run = 1;
+      /*
       window.addEventListener('keydown', (eve) => {
         run = eve.key !== 'Escape';
       }, false);
 
-      setInterval(function(){
-        pos0x = (Number(dataSet.nodes[69].x) + Number(dataSet.nodes[111].x)) / 2;
-        pos0y = (Number(dataSet.nodes[69].y) + Number(dataSet.nodes[111].y)) / 2;
-        pos1x = (Number(dataSet.nodes[1].x) + Number(dataSet.nodes[86].x)) / 2;
-        pos1y = (Number(dataSet.nodes[1].y) + Number(dataSet.nodes[86].y)) / 2;
-        pos2x = (Number(dataSet.nodes[110].x) + Number(dataSet.nodes[82].x)) / 2;
-        pos2y = (Number(dataSet.nodes[110].y) + Number(dataSet.nodes[82].y)) / 2;
-        pos3x = (Number(dataSet.nodes[30].x) + Number(dataSet.nodes[99].x)) / 2;
-        pos3y = (Number(dataSet.nodes[30].y) + Number(dataSet.nodes[99].y)) / 2;
-        pos4x = (Number(dataSet.nodes[27].x) + Number(dataSet.nodes[87].x)) / 2;
-        pos4y = (Number(dataSet.nodes[27].y) + Number(dataSet.nodes[87].y)) / 2;
-        pos5x = (Number(dataSet.nodes[126].x) + Number(dataSet.nodes[20].x)) / 2;
-        pos5y = (Number(dataSet.nodes[126].y) + Number(dataSet.nodes[20].y)) / 2;
-        pos6x = (Number(dataSet.nodes[135].x) + Number(dataSet.nodes[63].x)) / 2;
-        pos6y = (Number(dataSet.nodes[135].y) + Number(dataSet.nodes[63].y)) / 2;
-        pos7x = (Number(dataSet.nodes[2].x));
-        pos7y = (Number(dataSet.nodes[2].y) + 10);
-        pos8x = (Number(dataSet.nodes[68].x) + Number(dataSet.nodes[104].x)) / 2;
-        pos8y = (Number(dataSet.nodes[68].y) + Number(dataSet.nodes[104].y)) / 2;
-        pos9x = (Number(dataSet.nodes[32].x) + Number(dataSet.nodes[102].x)) / 2;
-        pos9y = (Number(dataSet.nodes[32].y) + Number(dataSet.nodes[102].y)) / 2;
-        pos10x = (Number(dataSet.nodes[98].x) + Number(dataSet.nodes[66].x)) / 2;
-        pos10y = (Number(dataSet.nodes[98].y) + Number(dataSet.nodes[66].y)) / 2;
-        pos11x = (Number(dataSet.nodes[42].x) + Number(dataSet.nodes[83].x)) / 2;
-        pos11y = (Number(dataSet.nodes[42].y) + Number(dataSet.nodes[83].y)) / 2;
 
 
-        if (cnt%5===0 && run){
-          console.log("X", pos0x, Number(dataSet.nodes[69].x), Number(dataSet.nodes[111].x))
-          console.log("Y", pos0y, Number(dataSet.nodes[69].y), Number(dataSet.nodes[111].y))
-        }
-        cnt = cnt+1;
-
-        $("#legend0").attr("x", function(){ return pos0x})
-            .attr("y", function(){ return pos0y});
-        $("#legend1").attr("x", function(){ return pos1x})
-            .attr("y", function(){ return pos1y});
-        $("#legend2").attr("x", function(){ return pos2x})
-            .attr("y", function(){ return pos2y});
-        $("#legend3").attr("x", function(){ return pos3x})
-            .attr("y", function(){ return pos3y});
-        $("#legend4").attr("x", function(){ return pos4x})
-            .attr("y", function(){ return pos4y});
-        $("#legend5").attr("x", function(){ return pos5x})
-            .attr("y", function(){ return pos5y});
-        $("#legend6").attr("x", function(){ return pos6x})
-            .attr("y", function(){ return pos6y});
-        $("#legend7").attr("x", function(){ return pos7x})
-            .attr("y", function(){ return pos7y});
-        $("#legend8").attr("x", function(){ return pos8x})
-            .attr("y", function(){ return pos8y});
-        $("#legend9").attr("x", function(){ return pos9x})
-            .attr("y", function(){ return pos9y});
-        $("#legend10").attr("x", function(){ return pos10x})
-            .attr("y", function(){ return pos10y});
-        $("#legend11").attr("x", function(){ return pos11x})
-            .attr("y", function(){ return pos11y});
-      }, 100);
+    cconsole.log('GO', force.alpha())
 
 
       /* //Initial display1// */
-      console.log(location.search.split('='), location.search.split('=')[1])
+      //console.log(location.search.split('='), location.search.split('=')[1])
       let initModu  = Number(location.search.split('=')[1]);
       let initNum  = InitNodeId[initModu];
       let initPos;
@@ -532,6 +562,9 @@ export default {
         //collision detection
         node
             .each(collide(0.5));
+
+        simulateTextPosision();
+
       });
 
 
@@ -736,6 +769,7 @@ export default {
           }
         }
 
+        // if index is undefined, nodes aren't colored.
         static initColor_(index) {
           let nodeIndex = index;
           let circle = $("circle");
@@ -799,7 +833,7 @@ export default {
           Coloring.legend(d);
           nodeOn = 1;
 
-          console.log(d['attributes.Modularity Class'], d.index,  d.id, event.pageX , event.pageY)
+          //console.log(d['attributes.Modularity Class'], d.index,  d.id, event.pageX , event.pageY)
         });
 
         // mouse out >>> to default color
@@ -867,14 +901,14 @@ export default {
 
         });
 
-        setTimeout(() => {
-          force.stop(); //force レイアウトの計算を終了
-          node.each(function(d){
-            //d.fixed = true
-          })
-
-        }, 10000)
       }
+
+      setTimeout(() => {
+        force.stop(); //force レイアウトの計算を終了
+        node.each(function(d){
+          //d.fixed = true
+        })
+      }, 10000)
 
       /////////////////////////////////////////////////////////////
 
@@ -893,7 +927,6 @@ export default {
       }
       */
 
-
       // coloring selected category
       if (isSp) {
         setTimeout(() => {$(initLegend).attr("class", "legend")}, 2000)
@@ -901,32 +934,27 @@ export default {
         $(initLegend).attr("class", "legend")
       }
 
+
       /* //Initial display2// */
-      let promise = new Promise((resolve, reject) => { // #1
+      let promise = new Promise((resolve) => { // #1
         resolve(Coloring.fade("colorFade"))
-        reject('error')
       })
       promise.then(() => { // #2
-        return new Promise((resolve, reject) => {
-          //resolve(Coloring.initColor(initPara))
-          //resolve(Coloring.initColoring(initNum))
-          resolve(Coloring.initColor_(initNum))
-          reject('error')
-        })
+        //resolve(Coloring.initColor(initPara))
+        //resolve(Coloring.initColoring(initNum))
+        Coloring.initColor_(initNum)
       }).then(() => { // #3
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
           setTimeout(() => {
             resolve(Coloring.fade("returnFade"))
             $("circle").parent().children('text').attr("class", "smallText")
             //legendForScale.attr("class", "legend")
-            reject('error')
           }, displayNodeDuration)
         })
       }).then(() => { // #3
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
           setTimeout(() => {
             resolve(legendForScale.attr("class", "legend"))
-            reject('error')
           }, displayLegendDuration)
         })
       }).catch(() => {

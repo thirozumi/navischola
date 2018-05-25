@@ -1,7 +1,6 @@
 <template lang="pug">
   .template-not-found
-    Header
-    h2 {{ title }}
+    h1 {{ title }}
     Footer
 </template>
 

@@ -2,34 +2,34 @@
   footer(role='content-info')
     router-link.brand-sm(to="/")
       img(src='/assets/images/logo-navischola.svg')
-    a.about(href='#', @click='showModal', onclick="return false")
+    a.about(href='#', @click='showAbout', onclick="return false")
       | {{ about }}
-    Modal(v-show='isModalVisible', @close='closeModal')
+    About(v-show='isAboutVisible', @close='closeAbout')
     .copyright
       small(v-html='copyright')
 </template>
 
 <script>
-import Modal from './Modal.vue'
+import About from './About.vue'
 
 export default {
   name: 'Footer',
   components: {
-    Modal
+    About
   },
   data() {
     return {
-      isModalVisible: false,
+      isAboutVisible: false,
       'about': 'About NaviSchola',
       'copyright': 'Copyright &copy; Kyoto University. All Rights Reserved.'
     }
   },
   methods: {
-    showModal() {
-      this.isModalVisible = true;
+    showAbout() {
+      this.isAboutVisible = true;
     },
-    closeModal() {
-      this.isModalVisible = false;
+    closeAbout() {
+      this.isAboutVisible = false;
     }
   }
 }
