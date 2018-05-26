@@ -3,13 +3,13 @@
     h3 {{ title_share }}
     .list-horizontal
       li
-        a(:href="'http://twitter.com/share?url=' + url", onclick="window.open(encodeURI(decodeURI(this.href)), 'TWwindow', 'width=650, height=470, personalbar=0, toolbar=0, scrollbars=1, sizable=1'); return false;", rel='nofollow')
+        a(:href="twUrl", target="_blank")
           img(src='/assets/images/icon-twitter.svg', alt='Twitter')
       li
-        a(:href="'http://www.facebook.com/share.php?u=' + url", onclick="window.open(this.href, 'FBwindow', 'width=650, height=450, menubar=no, toolbar=no, scrollbars=yes'); return false;")
+        a(:href="fbUrl", target="_blank")
           img(src='/assets/images/icon-facebook.svg', alt='Facebook')
       li
-        a(:href="'https://social-plugins.line.me/lineit/share?url=' + url", onclick="window.open(encodeURI(decodeURI(this.href)), 'LINEwindow', 'width=650, height=470, personalbar=0, toolbar=0, scrollbars=1, sizable=1'); return false;", rel='nofollow')
+        a(:href="lineUrl", target="_blank")
           img(src='/assets/images/icon-line.svg', alt='LINE')
 </template>
 
@@ -18,60 +18,33 @@ export default {
   name: 'Share',
   data() {
     return {
-      title_share: '診断結果をシェアする'
+      title_share: '診断結果をシェアする',
+      fbUrl: '',
+      twUrl: '',
+      lineUrl: ''
     }
   },
-  computed: {
-    url: function() {
-      let _url = window.location.href;
-      return _url;
+  methods: {
+    createSnsUrl : function() {
+    	let url = encodeURIComponent(location.href);
+      let txt = document.title;
+      let dsc = document.querySelector("meta[property='og:description']").getAttribute('content');
+    	this.fbUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + url;
+    	this.twUrl = 'https://twitter.com/intent/tweet?url=' + url + '&text=' + txt + ' - ' + dsc;
+      this.lineUrl = 'https://social-plugins.line.me/lineit/share?url=' + url;
     },
-    ogp: function() {
-      var param = location.search.substring(1).split('&');
-      var params = [];
-      var paramVal = '';
-      for(var i = 0; i < param.length; i++) {
-        params[i] = param[i].split('=');
-      }
-      for(var i = 0; i < params.length; i++) {
-        if(params[i][0] == 'page') {
-          paramVal = parseFloat(params[i][1]);
-        }
-      }
-
-      if(paramVal == '2') {
-        var title = '[書き換えテスト]' + document.title;
-        var url = location.href;
-        var image = 'http://cly7796.net/wp/sample/rewrite-ogp-with-javascript/01/img' + paramVal + '.jpg';
-
-        document.title = title;
-        var headData = document.head.children;
-        for (var i = 0; i < headData.length; i++) {
-          // OGPの設定
-          var propertyVal = headData[i].getAttribute('property');
-          if(propertyVal !== null) {
-            if(propertyVal.indexOf('og:title') != -1) {
-              headData[i].setAttribute('content', title);
-            }
-            if(propertyVal.indexOf('og:url') != -1) {
-              headData[i].setAttribute('content', url);
-            }
-            if(propertyVal.indexOf('og:image') != -1) {
-              headData[i].setAttribute('content', image);
-            }
-          }
-          // OGP(twitter)の設定
-          var nameVal = headData[i].getAttribute('name');
-          if(nameVal !== null) {
-            if(nameVal.indexOf('twitter:title') != -1) {
-              headData[i].setAttribute('content', title);
-            }
-            if(nameVal.indexOf('twitter:image') != -1) {
-              headData[i].setAttribute('content', image);
-            }
-          }
-        }
-      }
+    createOGImage: function() {
+      let og_image = 'http://localhost:8080/assets/images/og_' + this.$route.query.id + '.png';
+      document.querySelector("meta[property='og:image']").setAttribute('content', og_image);
+    }
+  },
+  mounted: function() {
+    this.createSnsUrl();
+    this.createOGImage();
+  },
+  watch: {
+    '$route' (to, from) {
+      this.createSnsUrl();
     }
   }
 }

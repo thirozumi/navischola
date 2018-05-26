@@ -49,6 +49,14 @@ export default {
   components: {
     Header, Footer, Share
   },
+  created: function() {
+    let id = this.$route.query.id;
+    this.results.forEach(function(v, i) {
+      if (i == id)
+        document.title = 'わたしは「' + v.name_secondary + '」タイプ！｜ナビスコラ：学問分野診断＆相関図';
+    });
+		document.querySelector('meta[property="description"]').setAttribute('content', 'あなたにぴったりな学問を見つけよう！')
+  },
   data() {
     return {
       'title_primary': 'Your Schola',

@@ -48,6 +48,10 @@ export default {
       start: 'いますぐ診断する',
       network: '学問分野相関図をみる'
     }
+  },
+  mounted: function() {
+    document.title = 'ナビスコラ：学問分野診断＆相関図';
+		document.querySelector('meta[property="description"]').setAttribute('content', 'あなたにぴったりな学問を見つけよう！')
   }
 }
 </script>

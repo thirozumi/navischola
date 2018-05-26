@@ -16,7 +16,7 @@
               router-link.button-primary(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ path: '/result', query: { id: getId(), s: getSubject()}}") YES
             li
               button.button-primary(v-show="count < (count_max - 1)", v-on:click="getNext(1)") NO
-              router-link.button-primary(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ path: '/result', query: { id: getId(), s: getSubject()}}") NO
+              router-link.button-primary(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ path: '/result', query: { id: getId(), s: getSubject() }}") NO
           p.question-count(v-show="count !== count_max") {{ current }} / {{ count_max }}
       Footer
 </template>
@@ -101,6 +101,10 @@ export default {
         }
       ],
     }
+  },
+  mounted: function() {
+    document.title = '分野診断ツール：Your Schola｜ナビスコラ：学問分野診断＆相関図';
+		document.querySelector('meta[property="description"]').setAttribute('content', 'あなたにぴったりな学問を見つけよう！')
   },
   computed: {
     title() {

@@ -45,6 +45,10 @@ export default {
       back: 'もどる'
     }
   },
+  mounted: function() {
+    document.title = '分野相関図：Schola Scope｜ナビスコラ：学問分野診断＆相関図';
+		document.querySelector('meta[property="description"]').setAttribute('content', 'あなたにぴったりな学問を見つけよう！')
+  },
   computed: {
     title() {
       return this.title_primary + ' | ' + this.title_secondary
