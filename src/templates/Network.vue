@@ -5,12 +5,16 @@
         .section-content
           h1
             img(src='/assets/images/title-schola-scope.svg', :alt='title')
-      router-link.nav-left.button-primary.button-lg(v-if="$route.query.id", v-bind:to="{ path : 'result', 'query': { id: $route.query.id, s: $route.query.s }}", tag='button')
+      router-link.nav-left.button-primary.button-lg.back-default(v-if="$route.query.id", v-bind:to="{ path : 'result', 'query': { id: $route.query.id, s: $route.query.s }}", tag='button')
         i.icon-oval.icon-chevron-left
         span {{ back }}
-      router-link.nav-left.button-primary.button-lg(v-else, v-bind:to="{ name : 'Home'}", tag='button')
+      router-link.nav-left.button-primary.button-lg.back-default(v-else, v-bind:to="{ name : 'Home'}", tag='button')
         i.icon-oval.icon-chevron-left
         span {{ back }}
+      router-link.nav-left.back-small(v-if="$route.query.id", v-bind:to="{ path : 'result', 'query': { id: $route.query.id, s: $route.query.s }}")
+        i.icon-oval-inverted.icon-oval-lg.icon-chevron-left
+      router-link.nav-left.back-small(v-else, v-bind:to="{ name : 'Home'}")
+        i.icon-oval-inverted.icon-oval-lg.icon-chevron-left
       .section-footer
         .list-horizontal
           li

@@ -5,7 +5,7 @@
         .section-content
           h1
             img(src='/assets/images/title-your-schola.svg', :alt="'title_primary' + ' | ' + 'title_secondary'")
-      .result-container(v-for="result in results", v-if="result.id == $route.query.id")
+      .result-container(v-for="result in results", v-if="result.id == $route.params.id")
         .result-body
           .result-heading
             h3 診断結果

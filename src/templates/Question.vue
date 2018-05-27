@@ -13,10 +13,12 @@
           ul.list-horizontal(v-for="question in questions", v-if="count == question.id")
             li
               button.button-primary(v-show="count < (count_max - 1)", v-on:click="getNext(0)") YES
-              router-link.button-primary(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ path: '/result', query: { id: getId(), s: getSubject()}}") YES
+              //- router-link.button-primary(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ path: '/result', query: { id: getId(), s: getSubject()}}") YES
+              router-link.button-primary(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ name: 'Result', params: { id: getId(), s: getSubject() }}") YES
             li
               button.button-primary(v-show="count < (count_max - 1)", v-on:click="getNext(1)") NO
-              router-link.button-primary(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ path: '/result', query: { id: getId(), s: getSubject() }}") NO
+              //- router-link.button-primary(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ path: '/result', query: { id: getId(), s: getSubject() }}") NO
+              router-link.button-primary(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ name: 'Result', params: { id: getId(), s: getSubject() }}") NO
           p.question-count(v-show="count !== count_max") {{ current }} / {{ count_max }}
       Footer
 </template>
