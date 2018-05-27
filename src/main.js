@@ -11,11 +11,27 @@ import NotFound from './templates/NotFound.vue'
 Vue.use(VueRouter);
 
 const routes = [
-  { name: 'Home', path: '/', component: Home },
-  { name: 'Question', path: '/question', component: Question },
-  { name: 'Result', path: '/result/:id/:s', component: Result },
-  { name: 'Network', path: '/network', component: Network },
-  { name: 'NotFound', path: '*', component: NotFound}
+  {
+    name: 'Home',
+    path: '/',
+    component: Home
+  },{
+    name: 'Question',
+    path: '/question',
+    component: Question
+  },{
+    name: 'Result',
+    path: '/result/:id/:s',
+    component: Result
+  },{
+    name: 'Network',
+    path: '/network',
+    component: Network
+  },{
+    name: 'NotFound',
+    path: '*',
+    component: NotFound
+  }
 ];
 
 const router = new VueRouter({
