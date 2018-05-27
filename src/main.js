@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import axios from 'axios'
 import App from './App.vue'
 import Home from './templates/Home.vue'
 import Question from './templates/Question.vue'
@@ -9,6 +8,7 @@ import Network from './templates/Network.vue'
 import NotFound from './templates/NotFound.vue'
 
 Vue.use(VueRouter);
+Vue.prototype.$host = 'http://navischola.thirozumi.org';
 
 const routes = [
   {
@@ -26,6 +26,10 @@ const routes = [
   },{
     name: 'Network',
     path: '/network',
+    component: Network
+  },{
+    name: 'Networks',
+    path: '/network/:id/:s',
     component: Network
   },{
     name: 'NotFound',

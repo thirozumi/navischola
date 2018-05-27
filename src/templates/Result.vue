@@ -29,10 +29,10 @@
               h4 【一言ナビ】
               p {{ result.summary_message }}
       .result-footer
-        router-link.nav-left.button-primary.button-lg(v-bind:to="{ name : 'Question'}", tag='button')
+        router-link.nav-left.button-primary.button-lg(v-bind:to="{ name : 'Question' }", tag='button')
           i.icon-oval.icon-chevron-left
           span {{ again }}
-        router-link.nav-right.button-primary.button-lg(v-bind:to="{ path: '/network', query: { id: $route.query.id, s: $route.query.s }}", tag='button')
+        router-link.nav-right.button-primary.button-lg(v-bind:to="{ name: 'Networks', params: { id: $route.params.id, s: $route.params.s }}", tag='button')
           span {{ network }}
           i.icon-oval.icon-chevron-right
       Footer
@@ -49,24 +49,37 @@ export default {
   components: {
     Header, Footer, Share
   },
+  methods: {
+    setMeta: function() {
+      let id = this.$route.params.id;
+      let title = '';
+      let url = '';
+
+      this.results.forEach(function(v, i) {
+        if (i == id)
+          title = 'わたしは「' + v.name_secondary + '」タイプ！｜ナビスコラ：学問分野診断＆相関図';
+      });
+
+      document.title = title;
+      document.querySelector('meta[property="og:title"]').setAttribute('content', title);
+  		document.querySelector('meta[property="description"]').setAttribute('content', this.description);
+      document.querySelector('meta[property="og:description"]').setAttribute('content', this.description);
+    }
+  },
   created: function() {
-    let id = this.$route.query.id;
-    this.results.forEach(function(v, i) {
-      if (i == id)
-        document.title = 'わたしは「' + v.name_secondary + '」タイプ！｜ナビスコラ：学問分野診断＆相関図';
-    });
-		document.querySelector('meta[property="description"]').setAttribute('content', 'あなたにぴったりな学問を見つけよう！')
+    this.setMeta()
   },
   data() {
     return {
-      'title_primary': 'Your Schola',
-      'title_secondary': '学問分野診断',
-      'again': 'もう一度診断する',
-      'network': '学問分野相関図をみる',
-      'results': [
+      description: 'あなたにぴったりな学問を見つけよう！',
+      title_primary: 'Your Schola',
+      title_secondary: '学問分野診断',
+      again: 'もう一度診断する',
+      network: '学問分野相関図をみる',
+      results: [
         {
           'id': 0,
-          'slug': 'biomedical-sciences',
+          'path': 'biomedical-sciences',
           'name_primary': 'Biomedical Sciences',
           'name_secondary': '医歯薬学',
           'summary_object': '人間の健康および病気から、生命活動までを扱う学問領域です。',
@@ -76,7 +89,7 @@ export default {
           'map': '/assets/images/poster-your-schola-00.svg'
         }, {
           'id': 1,
-          'slug': 'informatics',
+          'path': 'informatics',
           'name_primary': 'Informatics',
           'name_secondary': '情報学',
           'summary_object': '計算、通信、統計など、情報を扱うための方法を研究する学問領域です。',
@@ -86,7 +99,7 @@ export default {
           'map': '/assets/images/poster-your-schola-01.svg'
         }, {
           'id': 2,
-          'slug': 'humanities',
+          'path': 'humanities',
           'name_primary': 'Humanities',
           'name_secondary': '人文学',
           'summary_object': '人間が生み出す文化、および、そのなかでの価値判断を考察する学問領域です。',
@@ -96,7 +109,7 @@ export default {
           'map': '/assets/images/poster-your-schola-02.svg'
         }, {
           'id': 3,
-          'slug': 'biology',
+          'path': 'biology',
           'name_primary': 'Biology',
           'name_secondary': '生物学',
           'summary_object': '生命の原理を明らかにするための学問領域です。科学者の知的好奇心から出発した基礎研究と、そこから発展した大型プロジェクトに大別されます。',
@@ -106,7 +119,7 @@ export default {
           'map': '/assets/images/poster-your-schola-03.svg'
         }, {
           'id': 4,
-          'slug': 'social-science',
+          'path': 'social-science',
           'name_primary': 'Social Science',
           'name_secondary': '社会科学',
           'summary_object': '人間を社会という集合体として捉え、実験や調査によるデータ分析などの科学的な手法を用い、解明しようとする学問領域です。',
@@ -116,7 +129,7 @@ export default {
           'map': '/assets/images/poster-your-schola-04.svg'
         }, {
           'id': 5,
-          'slug': 'mathematical-and-physical-sciences',
+          'path': 'mathematical-and-physical-sciences',
           'name_primary': 'Mathematical and Physical Sciences',
           'name_secondary': '数物系科学',
           'summary_object': '宇宙、気象現象、素粒子、さらには数学の抽象的な概念といった、自然現象に潜む「法則」を解明する学問領域です。',
@@ -126,7 +139,7 @@ export default {
           'map': '/assets/images/poster-your-schola-05.svg'
         }, {
           'id': 6,
-          'slug': 'general-science-and-engineering',
+          'path': 'general-science-and-engineering',
           'name_primary': 'General Science and Engineering',
           'name_secondary': '総合理工',
           'summary_object': '理学と工学を横断する分野を扱う学問領域です。たとえば量子ビーム科学は、中性子などを生み出す物理学とレーザーを発生させるための工学が融合した分野です。',
@@ -136,7 +149,7 @@ export default {
           'map': '/assets/images/poster-your-schola-06.svg'
         }, {
           'id': 7,
-          'slug': 'environmental-studies',
+          'path': 'environmental-studies',
           'name_primary': 'Environmental Studies',
           'name_secondary': '環境学',
           'summary_object': '自然、社会、都市など、人間を取り巻く環境を扱う学問領域です。',
@@ -146,7 +159,7 @@ export default {
           'map': '/assets/images/poster-your-schola-07.svg'
         }, {
           'id': 8,
-          'slug': 'chemistry',
+          'path': 'chemistry',
           'name_primary': 'Chemistry',
           'name_secondary': '化学',
           'summary_object': 'あらゆる物質の「結合・反応・構造・物性」を研究する学問領域です。',
@@ -156,7 +169,7 @@ export default {
           'map': '/assets/images/poster-your-schola-08.svg'
         }, {
           'id': 9,
-          'slug': 'combined-fields',
+          'path': 'combined-fields',
           'name_primary': 'Combined Fields',
           'name_secondary': '複合領域',
           'summary_object': '既存の学問分類では扱うことが難しい、横断的な分野を扱う学問領域です。',
@@ -166,7 +179,7 @@ export default {
           'map': '/assets/images/poster-your-schola-09.svg'
         }, {
           'id': 10,
-          'slug': 'agriculture',
+          'path': 'agriculture',
           'name_primary': 'Agriculture',
           'name_secondary': '農学',
           'summary_object': '生物生産・生産環境と人間社会との関わりを研究する学問領域です。',
@@ -176,7 +189,7 @@ export default {
           'map': '/assets/images/poster-your-schola-10.svg'
         }, {
           'id': 11,
-          'slug': 'engineering',
+          'path': 'engineering',
           'name_primary': 'Engineering',
           'name_secondary': '工学',
           'summary_object': '数学と自然科学をベースに、いまだ存在しない状態やモノを実現できるか、人間・社会の利益のために研究する学問領域です。',
@@ -194,7 +207,7 @@ export default {
 <style lang="scss">
   @import "../assets/styles/main.scss";
   .r-enter-active, .r-leave-active {
-    transition: opacity 1.2s;
+    transition: opacity .5s;
   }
   .r-enter, .r-leave-to {
     opacity: 0;

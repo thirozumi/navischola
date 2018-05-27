@@ -4,7 +4,7 @@
       section.section-heading-secondary
         .section-content
           h1
-            img(src='/assets/images/title-your-schola.svg', :alt="title")
+            img(src='/assets/images/title-your-schola.svg', :alt="title_alt")
       section.section-question-main(v-show="count < count_max")
         .section-content
           .question-title
@@ -13,11 +13,9 @@
           ul.list-horizontal(v-for="question in questions", v-if="count == question.id")
             li
               button.button-primary(v-show="count < (count_max - 1)", v-on:click="getNext(0)") YES
-              //- router-link.button-primary(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ path: '/result', query: { id: getId(), s: getSubject()}}") YES
               router-link.button-primary(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ name: 'Result', params: { id: getId(), s: getSubject() }}") YES
             li
               button.button-primary(v-show="count < (count_max - 1)", v-on:click="getNext(1)") NO
-              //- router-link.button-primary(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ path: '/result', query: { id: getId(), s: getSubject() }}") NO
               router-link.button-primary(v-show="count == (count_max - 1)", tag="button", v-bind:to="{ name: 'Result', params: { id: getId(), s: getSubject() }}") NO
           p.question-count(v-show="count !== count_max") {{ current }} / {{ count_max }}
       Footer
@@ -34,6 +32,10 @@ export default {
   },
   data() {
     return {
+      title: '分野診断ツール：Your Schola｜ナビスコラ：学問分野診断＆相関図',
+      description: 'あなたにぴったりな学問を見つけよう！',
+      path: '/question',
+      image: '/assets/images/og.png',
       title_primary: 'Your Schola',
       title_secondary: '学問分野診断',
       count: 0,
@@ -104,12 +106,11 @@ export default {
       ],
     }
   },
-  mounted: function() {
-    document.title = '分野診断ツール：Your Schola｜ナビスコラ：学問分野診断＆相関図';
-		document.querySelector('meta[property="description"]').setAttribute('content', 'あなたにぴったりな学問を見つけよう！')
+  created: function() {
+    this.setMeta()
   },
   computed: {
-    title() {
+    title_alt: function() {
       return this.title_primary + ' | ' + this.title_secondary
     },
     current: function() {
@@ -117,6 +118,13 @@ export default {
     }
   },
   methods: {
+    setMeta: function() {
+      document.title = this.title;
+      document.querySelector('meta[property="og:title"]').setAttribute('content', this.title);
+  		document.querySelector('meta[property="description"]').setAttribute('content', this.description);
+      document.querySelector('meta[property="og:description"]').setAttribute('content', this.description); document.querySelector('meta[property="og:image"]').setAttribute('content', this.$host + this.image);
+      document.querySelector('meta[property="og:url"]').setAttribute('content', this.$host + this.path);
+    },
     init: function() {
       this.count = 0;
     },

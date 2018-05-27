@@ -22,7 +22,7 @@
       section.section-scope
         .section-content
           ScholaScope
-          router-link.nav-right.button-primary.button-lg(v-bind:to="{ name : 'Network'}", tag='button')
+          router-link.nav-right.button-primary.button-lg(v-bind:to="{ name : 'Network' }", tag='button')
             span {{ network }}
             i.icon-oval.icon-chevron-right
       Footer
@@ -40,6 +40,10 @@ export default {
   },
   data() {
     return {
+      title: 'ナビスコラ：学問分野診断＆相関図',
+      description: 'あなたにぴったりな学問を見つけよう！',
+      path: '/',
+      image: '/assets/images/og.png',
       title_primary: 'NaviSchola',
       title_secondary: 'ナビスコラ',
       subtitle: 'あなたにぴったりの学問',
@@ -49,9 +53,17 @@ export default {
       network: '学問分野相関図をみる'
     }
   },
+  methods: {
+    setMeta: function() {
+      document.title = this.title;
+      document.querySelector('meta[property="og:title"]').setAttribute('content', this.title);
+  		document.querySelector('meta[property="description"]').setAttribute('content', this.description);
+      document.querySelector('meta[property="og:description"]').setAttribute('content', this.description); document.querySelector('meta[property="og:image"]').setAttribute('content', this.$host + this.image);
+      document.querySelector('meta[property="og:url"]').setAttribute('content', this.$host + this.path);
+    }
+  },
   mounted: function() {
-    document.title = 'ナビスコラ：学問分野診断＆相関図';
-		document.querySelector('meta[property="description"]').setAttribute('content', 'あなたにぴったりな学問を見つけよう！')
+    this.setMeta()
   }
 }
 </script>
@@ -59,10 +71,10 @@ export default {
 <style lang="scss">
   @import "../assets/styles/main.scss";
   .h-enter-active, .h-leave-active {
-    transition: all .4s;
+    transition: all .5s;
   }
   .h-enter, .h-leave-to {
     opacity: 0;
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
 </style>

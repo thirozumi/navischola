@@ -4,14 +4,14 @@
       section.section-heading-secondary
         .section-content
           h1
-            img(src='/assets/images/title-schola-scope.svg', :alt='title')
-      router-link.nav-left.button-primary.button-lg.back-default(v-if="$route.query.id", v-bind:to="{ path : 'result', 'query': { id: $route.query.id, s: $route.query.s }}", tag='button')
+            img(src='/assets/images/title-schola-scope.svg', :alt='title_alt')
+      router-link.nav-left.button-primary.button-lg.back-default(v-if="$route.params.id", v-bind:to="{ name : 'Result', 'params': { id: $route.params.id, s: $route.params.s }}", tag='button')
         i.icon-oval.icon-chevron-left
         span {{ back }}
       router-link.nav-left.button-primary.button-lg.back-default(v-else, v-bind:to="{ name : 'Home'}", tag='button')
         i.icon-oval.icon-chevron-left
         span {{ back }}
-      router-link.nav-left.back-small(v-if="$route.query.id", v-bind:to="{ path : 'result', 'query': { id: $route.query.id, s: $route.query.s }}")
+      router-link.nav-left.back-small(v-if="$route.params.id", v-bind:to="{ name : 'Result', 'params': { id: $route.params.id, s: $route.params.s }}")
         i.icon-oval-inverted.icon-oval-lg.icon-chevron-left
       router-link.nav-left.back-small(v-else, v-bind:to="{ name : 'Home'}")
         i.icon-oval-inverted.icon-oval-lg.icon-chevron-left
@@ -37,28 +37,38 @@ import ScholaScope from '../components/ScholaScope.vue'
 import Footer from '../components/Footer.vue'
 
 export default {
-  name: 'Home',
+  name: 'Network',
   components: {
     Footer, ScholaScope, Help
   },
   data() {
     return {
+      title: '分野相関図：Schola Scope｜ナビスコラ：学問分野診断＆相関図',
+      description: 'あなたにぴったりな学問を見つけよう！',
+      path: '/network',
+      image: '/assets/images/og.png',
       isHelpVisible: false,
       title_primary: 'Schola Scope',
       title_secondary: '学問分野相関図',
       back: 'もどる'
     }
   },
-  mounted: function() {
-    document.title = '分野相関図：Schola Scope｜ナビスコラ：学問分野診断＆相関図';
-		document.querySelector('meta[property="description"]').setAttribute('content', 'あなたにぴったりな学問を見つけよう！')
+  created: function() {
+    this.setMeta()
   },
   computed: {
-    title() {
+    title_alt() {
       return this.title_primary + ' | ' + this.title_secondary
     }
   },
   methods: {
+    setMeta: function() {
+      document.title = this.title;
+      document.querySelector('meta[property="og:title"]').setAttribute('content', this.title);
+  		document.querySelector('meta[property="description"]').setAttribute('content', this.description);
+      document.querySelector('meta[property="og:description"]').setAttribute('content', this.description); document.querySelector('meta[property="og:image"]').setAttribute('content', this.$host + this.image);
+      document.querySelector('meta[property="og:url"]').setAttribute('content', this.$host + this.path);
+    },
     showHelp() {
       this.isHelpVisible = true;
     },

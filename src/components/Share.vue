@@ -34,8 +34,10 @@ export default {
       this.lineUrl = 'https://social-plugins.line.me/lineit/share?url=' + url;
     },
     createOGImage: function() {
-      let og_image = 'http://localhost:8080/assets/images/og_' + this.$route.query.id + '.png';
+      let path = location.pathname;
+      let og_image = this.$host + '/assets/images/og_' + this.$route.params.id + '.png';
       document.querySelector("meta[property='og:image']").setAttribute('content', og_image);
+      document.querySelector('meta[property="og:url"]').setAttribute('content', this.$host + path);
     }
   },
   mounted: function() {
