@@ -8,7 +8,7 @@ module.exports = {
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, './assets'),
-    publicPath: 'http://navischola.thirozumi.org/assets',
+    publicPath: 'assets/',
     filename: 'build.js'
   },
   module: {

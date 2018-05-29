@@ -9,7 +9,7 @@
         .section-content
           .question-title
             strong QUESTION {{ current }}
-          h1.question-summary(v-for="question in questions", v-if="count == question.id", v-html='question.summary')
+            h1.question-summary(v-for="question in questions", v-if="count == question.id", v-html='question.summary')
           ul.list-horizontal(v-for="question in questions", v-if="count == question.id")
             li
               button.button-primary(v-show="count < (count_max - 1)", v-on:click="getNext(0)") YES
@@ -41,6 +41,7 @@ export default {
       count: 0,
       count_max: 20,
       d: [],
+      show: true,
       questions: [
         {
           "id": "0",
@@ -129,14 +130,10 @@ export default {
       this.count = 0;
     },
     getNext: function(val) {
+
       this.count++;
       this.d.push(val);
-      console.log('push, ', this.d);
-    },
-    getPrevious: function() {
-      this.count--;
-      this.d.pop();
-      console.log('pop, ', this.d);
+      //console.log('push, ', this.d);
     },
     getId: function() {
       if(this.d[0] <= 0.5)

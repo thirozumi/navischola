@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import VueAnalytics from 'vue-analytics'
 import App from './App.vue'
 import Home from './templates/Home.vue'
 import Question from './templates/Question.vue'
@@ -8,7 +9,7 @@ import Network from './templates/Network.vue'
 import NotFound from './templates/NotFound.vue'
 
 Vue.use(VueRouter);
-Vue.prototype.$host = 'http://navischola.thirozumi.org';
+Vue.prototype.$host = 'https://navischola.app';
 
 const routes = [
   {
@@ -51,3 +52,8 @@ new Vue({
   router,
   render: h => h(App)
 });
+
+Vue.use(VueAnalytics, {
+  id: 'UA-42120995-3',
+  router
+})

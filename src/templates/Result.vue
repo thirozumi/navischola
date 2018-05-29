@@ -75,7 +75,7 @@ export default {
       title_primary: 'Your Schola',
       title_secondary: '学問分野診断',
       again: 'もう一度診断する',
-      network: '学問分野相関図をみる',
+      network: 'つながりをみる',
       results: [
         {
           'id': 0,
