@@ -19,7 +19,7 @@ const routes = [
     name: 'Question',
     path: '/question',
     component: Question
-  },{
+  }, {
     name: 'Result',
     path: '/result/:id/:s',
     component: Result
