@@ -1,7 +1,6 @@
 <template lang="pug">
   transition-group(name='fade', tag='div', class='slider')
     .slider-item(v-for='number in [currentNumber]', :key='number')
-      //- img(:src="currentImage", v-on:mouseover='stopRotation', v-on:mouseout='startRotation')
       img(:src="currentImage")
 </template>
 

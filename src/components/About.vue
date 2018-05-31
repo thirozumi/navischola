@@ -44,8 +44,8 @@
         button_lead: '＊「学術分野の文化比較大調査」が収集したデータは現在1,757件。日本の研究者を網羅するためには、約20,000件が必要です。研究者の方はアンケートに是非ともご協力ください。',
         enquete_text: 'アンケートに回答する',
         enquete_link: 'https://survey2015.symposium-hp.jp/apply.php',
-        author: '<a href="http://www.cpier.kyoto-u.ac.jp/" target="_blank" rel="noopener">京都大学 学際融合教育研究推進センター</a><br>住所｜京都市左京区吉田本町 文学部東館358号<br>TEL｜075-753-5338',
-        inquiry: '本プロジェクトへのお問い合わせは<a href="http://www.cpier.kyoto-u.ac.jp/inquiry/" target="_blank"  rel="noopener">こちら</a>から',
+        author: '京都大学 学際融合教育研究推進センター<br>住所｜京都市左京区吉田本町 文学部東館358号<br>TEL｜075-753-5338／MAIL｜info@cpier.kyoto-u.ac.jp<br>WEB｜<a href="http://www.cpier.kyoto-u.ac.jp/" target="_blank" rel="noopener">http://www.cpier.kyoto-u.ac.jp/</a>',
+        inquiry: '研究者の方に向けた本プロジェクト詳細は<a href="http://www.cpier.kyoto-u.ac.jp/2018/05/navischola/" target="_blank"  rel="noopener">こちら</a>から',
         credit: '監修：宮野公樹（京都大学 学際融合教育研究推進センター）／クリエイティブディレクション：若林恵（blkswn）／イラストレーション：浜名信次（Beach）／データ解析・ビジュアライズ：出雲翔（habitech Inc.）／デザイン：谷戸正樹／ウェブデベロップメント：竹田大純／編集・ライティング：矢代真也（合同会社飛ぶ教室）'
       }
     }
