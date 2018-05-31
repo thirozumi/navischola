@@ -1,8 +1,12 @@
 .DS_Store
 node_modules/
-dist/
+assets/
+prerendered/
 npm-debug.log
 yarn-error.log
+robots.txt
+*.lock
+*.sh
 
 # Editor directories and files
 .idea
